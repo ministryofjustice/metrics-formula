@@ -126,6 +126,10 @@ graphite_seed:
       server_name: graphite.*
       is_default: False
       root_dir: /srv/graphite/data/webapp
+      headers:
+       add_header Access-Control-Allow-Origin "*";
+       add_header Access-Control-Allow-Methods "GET, OPTIONS";
+       add_header Access-Control-Allow-Headers "origin, authorization, accept";
     - watch_in:
       - service: nginx
 
