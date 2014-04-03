@@ -1,0 +1,36 @@
+{% set bucky = salt['grains.filter_by']({
+    'Debian': {
+        'carbon': 'localhost',
+    },
+    'default': 'Debian',
+}, merge=salt['pillar.get']('bucky',{})) %}
+
+
+{% set collectd = salt['grains.filter_by']({
+    'Debian': {
+        'statsd': 'localhost',
+    },
+    'default': 'Debian',
+}, merge=salt['pillar.get']('collectd',{})) %}
+
+
+{% set beaver = salt['grains.filter_by']({
+    'Debian': {
+        'redis': {
+            'host': 'localhost',
+            'port': 6379,
+            'db': 0,
+        }
+    },
+    'default': 'Debian',
+}, merge=salt['pillar.get']('beaver',{})) %}
+
+
+{% set graphite = salt['grains.filter_by']({
+    'Debian': {
+        'secret_key': 'updateme'
+    },
+    'default': 'Debian',
+}, merge=salt['pillar.get']('graphite',{})) %}
+
+

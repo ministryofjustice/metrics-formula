@@ -1,0 +1,4 @@
+include:
+  - .graphite
+  - .statsd
+  - .collectd
