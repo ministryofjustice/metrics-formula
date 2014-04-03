@@ -17,7 +17,7 @@ include:
     - managed
     - venv_bin: /usr/local/bin/virtualenv
     - system_site_packages: False
-    - requirements: salt://statistics/files/statsd/requirements.txt
+    - requirements: salt://graphite/files/statsd/requirements.txt
     - require:
       - pkg: collectd-utils
 
@@ -33,7 +33,7 @@ include:
   file:
     - managed
     - template: jinja
-    - source: salt://statistics/templates/statsd/bucky.conf
+    - source: salt://graphite/templates/statsd/bucky.conf
     - watch_in:
       - service: supervisord
 

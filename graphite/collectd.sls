@@ -13,7 +13,7 @@ collectd-utils:
 /etc/collectd/collectd.conf:
   file:
     - managed
-    - source: salt://statistics/templates/collectd/collectd.conf
+    - source: salt://graphite/templates/collectd/collectd.conf
     - template: jinja
     - watch_in:
       - service: collectd

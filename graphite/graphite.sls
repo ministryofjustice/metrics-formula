@@ -21,7 +21,7 @@ python-cairo-dev:
 /srv/graphite/requirements.txt:
   file:
     - managed
-    - source: salt://statistics/files/graphite/requirements.txt
+    - source: salt://graphite/files/graphite/requirements.txt
     - user: graphite
     - group: graphite
 
@@ -29,7 +29,7 @@ python-cairo-dev:
 graphite_virtualenv:
   cmd:
     - script
-    - source: salt://statistics/files/graphite/requirements.sh
+    - source: salt://graphite/files/graphite/requirements.sh
     - unless: 'test -e /srv/graphite/.graphite_virtualenv.done'
     - user: graphite
     - require:
@@ -41,7 +41,7 @@ graphite_virtualenv:
 /srv/graphite/application/current/graphite/wsgi.py:
   file:
     - managed
-    - source: salt://statistics/files/graphite/graphite.wsgi
+    - source: salt://graphite/files/graphite/graphite.wsgi
     - user: graphite
     - group: graphite
     - watch_in:
@@ -51,7 +51,7 @@ graphite_virtualenv:
 /srv/graphite/application/current/graphite/local_settings.py:
   file:
     - managed
-    - source: salt://statistics/templates/graphite/local_settings.py
+    - source: salt://graphite/templates/graphite/local_settings.py
     - template: jinja
     - user: graphite
     - group: graphite
@@ -62,7 +62,7 @@ graphite_virtualenv:
 /srv/graphite/conf:
   file:
     - recurse
-    - source: salt://statistics/files/graphite/conf
+    - source: salt://graphite/files/graphite/conf
     - user: graphite
     - group: graphite
     - watch_in:
@@ -81,7 +81,7 @@ graphite_virtualenv:
 graphite_seed:
   cmd:
     - script
-    - source: salt://statistics/files/graphite/graphite_seed.sh
+    - source: salt://graphite/files/graphite/graphite_seed.sh
     - cwd: /srv/graphite/application/current
     - unless: 'test -e /srv/graphite/.graphite_seed.done'
     - user: graphite

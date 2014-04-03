@@ -1,4 +1,4 @@
-{% from 'statistics/map.jinja' import graphite with context %}
+{% from 'graphite/map.jinja' import graphite with context %}
 
 ## Graphite local_settings.py
 # Edit this file to customize the default Graphite webapp settings

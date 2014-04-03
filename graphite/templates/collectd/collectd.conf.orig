@@ -1,4 +1,4 @@
-{% from 'statistics/map.jinja' import collectd with context %}
+{% from 'graphite/map.jinja' import collectd with context %}
 
 # Config file for collectd(1).
 #
@@ -463,7 +463,7 @@ LoadPlugin users
 #	# proxy setup (client and server as above):
 #	Forward true
 #
-#	# statistics about the network plugin itself
+#	# graphite about the network plugin itself
 #	ReportStats false
 #
 #	# "garbage collection"
