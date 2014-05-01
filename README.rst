@@ -1,8 +1,8 @@
-========
-graphite
-========
+=======
+metrics
+=======
 
-Install and configure graphite, collectd and statds (via bucky) and grafana
+Install and configure graphite, collectd and statsd (via bucky) and grafana
 
 .. note::
 
