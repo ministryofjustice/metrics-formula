@@ -1,6 +1,7 @@
 {% set graphite = salt['grains.filter_by']({
     'Debian': {
         'carbon': 'localhost',
+        'secret_key': 'updateme'
     },
     'default': 'Debian',
 }, merge=salt['pillar.get']('graphite',{})) %}
@@ -25,12 +26,5 @@
     'default': 'Debian',
 }, merge=salt['pillar.get']('beaver',{})) %}
 
-
-{% set graphite = salt['grains.filter_by']({
-    'Debian': {
-        'secret_key': 'updateme'
-    },
-    'default': 'Debian',
-}, merge=salt['pillar.get']('graphite',{})) %}
 
 
