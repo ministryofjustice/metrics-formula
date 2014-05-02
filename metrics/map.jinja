@@ -1,6 +1,5 @@
 {% set graphite = salt['grains.filter_by']({
     'Debian': {
-        'carbon': 'localhost',
         'secret_key': 'updateme'
     },
     'default': 'Debian',
@@ -9,7 +8,7 @@
 
 {% set collectd = salt['grains.filter_by']({
     'Debian': {
-        'statsd': 'localhost',
+        'carbon': 'monitoring.local',
     },
     'default': 'Debian',
 }, merge=salt['pillar.get']('collectd',{})) %}
