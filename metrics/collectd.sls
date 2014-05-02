@@ -1,5 +1,6 @@
 
-pkgrepo.managed:
+gds-govuk:
+  pkgrepo.managed:
     - ppa: gds/govuk
     - require_in:
       - pkg: collectd
