@@ -68,13 +68,6 @@ graphite_virtualenv:
     - watch_in:
       - supervisord: supervise-graphite
 
-/var/run/graphite:
-  file:
-    - directory
-    - user: root
-    - group: webservice
-    - mode: 770
-
 /srv/graphite/storage/log/webapp:
   file:
     - directory
