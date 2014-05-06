@@ -68,6 +68,12 @@ graphite_virtualenv:
     - watch_in:
       - supervisord: supervise-graphite
 
+/var/run/graphite:
+  file:
+    - directory
+    - user: root
+    - group: webservice
+    - mode: 770
 
 /srv/graphite/storage/log/webapp:
   file:
@@ -98,7 +104,7 @@ graphite_seed:
 
 {{ supervise("graphite",
              cmd="/srv/graphite/virtualenv/bin/gunicorn",
-             args="graphite.wsgi:application -b unix:///var/run/services/graphite.sock",
+             args="graphite.wsgi:application -b unix:///var/run/graphite/graphite.sock",
              numprocs=1,
              working_dir="/srv/graphite/application/current",
              supervise=True) }}
@@ -121,7 +127,7 @@ graphite_seed:
     - mode: 644
     - template: jinja
     - context:
-      unix_socket: /var/run/services/graphite.sock
+      unix_socket: /var/run/graphite/graphite.sock
       appslug: graphite
       server_name: graphite.*
       is_default: False
