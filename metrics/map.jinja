@@ -1,14 +1,14 @@
-{% set bucky = salt['grains.filter_by']({
+{% set graphite = salt['grains.filter_by']({
     'Debian': {
-        'carbon': 'localhost',
+        'secret_key': 'updateme'
     },
     'default': 'Debian',
-}, merge=salt['pillar.get']('bucky',{})) %}
+}, merge=salt['pillar.get']('graphite',{})) %}
 
 
 {% set collectd = salt['grains.filter_by']({
     'Debian': {
-        'statsd': 'localhost',
+        'carbon': 'monitoring.local',
     },
     'default': 'Debian',
 }, merge=salt['pillar.get']('collectd',{})) %}
@@ -25,12 +25,5 @@
     'default': 'Debian',
 }, merge=salt['pillar.get']('beaver',{})) %}
 
-
-{% set graphite = salt['grains.filter_by']({
-    'Debian': {
-        'secret_key': 'updateme'
-    },
-    'default': 'Debian',
-}, merge=salt['pillar.get']('graphite',{})) %}
 
 

@@ -1,3 +1,4 @@
+
 collectd:
   pkg:
     - installed
