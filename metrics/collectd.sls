@@ -2,6 +2,7 @@
 collectd:
   pkg:
     - installed
+    - version: 5.4.0-ppa1~precise1
   service:
     - running
     - enable: True
