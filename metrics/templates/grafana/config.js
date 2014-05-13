@@ -14,7 +14,7 @@ function (Settings) {
      * elasticsearch url:
      * For Basic authentication use: http://username:password@domain.com:9200
      */
-    elasticsearch: "{{ elasticsearchUrl }}",
+    elasticsearch: "{{ grafana.elasticsearchUrl }}",
 
     /**
      * graphite-web url:
@@ -23,7 +23,7 @@ function (Settings) {
      * in nginx or apache for cross origin domain sharing to work (CORS).
      * Check install documentation on github
      */
-    graphiteUrl: "{{ graphiteUrl }}", 
+    graphiteUrl: "{{ grafana.graphiteUrl }}", 
 
     /**
      * Multiple graphite servers? Comment out graphiteUrl and replace with
