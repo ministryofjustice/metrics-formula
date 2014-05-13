@@ -1,8 +1,9 @@
+{% from "metrics/map.jinja" import collectd with context %}
 
 collectd:
   pkg:
     - installed
-    - version: 5.4.0-ppa1~precise1
+    - version: {{ collectd.revision }}
   service:
     - running
     - enable: True
