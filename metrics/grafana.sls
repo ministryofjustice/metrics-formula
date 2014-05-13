@@ -19,7 +19,7 @@ grafana.git:
 /srv/grafana/application/current:
   file:
     - symlink
-    - target: /srv/kibana/application/{{ grafana.revision }}
+    - target: /srv/grafana/application/{{ grafana.revision }}
     - makedirs: True
     - watch:
       - git: grafana.git
