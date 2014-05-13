@@ -2,6 +2,8 @@
     'Debian': {
         'revision': 'v1.5.3',
         'graphite': 'graphite.local',
+        'elasticsearchUrl': "http://"+window.location.hostname.replace(/^grafana/,'elastic-search')+":8080",
+        'graphiteUrl': "http://"+window.location.hostname.replace(/^grafana/,'graphite')+":8080"
     },
     'default': 'Debian',
 }, merge=salt['pillar.get']('grafana', {})) %}
