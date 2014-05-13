@@ -1,3 +1,8 @@
+## Version 1.0.2
+
+* Added Grafana to server definition
+* Pinned collectd package to 5.4.0 to ensure existing servers take upgrade
+
 ## Version 1.0.1
 
 * Update to collectd 5.4.0
