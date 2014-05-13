@@ -4,6 +4,11 @@ collectd:
   pkg:
     - installed
     - version: {{ collectd.revision }}
+    - pkgs: 
+      - collectd
+      - collectd-core
+    - watch_in: 
+      - service: collectd
   service:
     - running
     - enable: True
