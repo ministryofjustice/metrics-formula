@@ -13,7 +13,7 @@ function (Settings) {
      * elasticsearch url:
      * For Basic authentication use: http://username:password@domain.com:9200
      */
-    elasticsearch: "http://"+window.location.hostname.replace(/^grafana/,'elasticsearch')+":8080",
+    elasticsearch: "http://"+window.location.hostname.replace(/^grafana/,'elastic-search')+":8080",
 
     /**
      * graphite-web url:
