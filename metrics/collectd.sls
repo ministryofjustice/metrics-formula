@@ -1,9 +1,16 @@
 {% from "metrics/map.jinja" import collectd with context %}
 
-collectd:
-  pkg:
-    - installed
+collectd-core:
+  pkg.installed:
     - version: {{ collectd.revision }}
+    - watch_in:
+      - service: collectd
+
+collectd:
+  pkg.installed:
+    - version: {{ collectd.revision }}
+    - watch_in:
+      - service: collectd
   service:
     - running
     - enable: True
@@ -20,3 +27,4 @@ collectd-utils:
     - template: jinja
     - watch_in:
       - service: collectd
+
