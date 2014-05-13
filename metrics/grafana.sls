@@ -35,11 +35,6 @@ grafana.git:
     - group: root
     - mode: 644 
     - template: jinja
-    - require:
-      - user: kibana
-    - context:
-      elastic_search_url: http://{{kibana.elasticsearch}}:8080
-      graphite_url: http://{{grafana.graphite}}:8080
 
 /etc/nginx/conf.d/grafana.conf:
   file:
@@ -51,8 +46,6 @@ grafana.git:
     - template: jinja
     - watch_in:
       - service: nginx
-    - require:
-      - user: kibana
     - context:
       appslug: grafana
       is_default: False
