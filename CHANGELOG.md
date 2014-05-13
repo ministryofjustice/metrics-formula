@@ -1,3 +1,7 @@
+## Version 1.0.4
+
+* Ensure collectd-core is upgraded with collectd if necessary
+
 ## Version 1.0.3
 
 * Fixed error in grafana template
