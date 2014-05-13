@@ -1,3 +1,7 @@
+## Version 1.0.3
+
+* Fixed error in grafana template
+
 ## Version 1.0.2
 
 * Added Grafana to server definition
