@@ -1,4 +1,5 @@
 {% from "logstash/map.jinja" import kibana with context %}
+{% from "metrics/map.jinja" import grafana with context %}
 {% from 'utils/apps/lib.sls' import app_skeleton with context %}
 
 include:
@@ -38,7 +39,7 @@ grafana.git:
       - user: kibana
     - context:
       elastic_search_url: http://{{kibana.elasticsearch}}:8080
-      graphite_url: http://{{graphite.fqdn}}:8080
+      graphite_url: http://{{grafana.graphite}}:8080
 
 /etc/nginx/conf.d/grafana.conf:
   file:
