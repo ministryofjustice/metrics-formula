@@ -30,7 +30,7 @@ grafana.git:
 /srv/grafana/application/current/src/config.js:
   file:
     - managed
-    - source: salt://logstash/templates/grafana/config.js
+    - source: salt://metrics/templates/grafana/config.js
     - user: root
     - group: root
     - mode: 644 
