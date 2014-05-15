@@ -1,3 +1,8 @@
+## Version 1.0.5
+
+* Set StoreRates to true in collectd.conf to ensure counters (especially cpu) do not keep incrementing
+* Remove unused rrdtool plugin
+
 ## Version 1.0.4
 
 * Ensure collectd-core is upgraded with collectd if necessary
