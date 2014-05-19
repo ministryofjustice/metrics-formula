@@ -47,7 +47,7 @@ function (Settings) {
      *   If TIME_ZONE is set to UTC, set this to "0000"
      */
 
-    timezoneOffset: null,
+    timezoneOffset: "0000",
 
     grafana_index: "grafana-dash",
 
