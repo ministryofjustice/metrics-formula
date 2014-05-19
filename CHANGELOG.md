@@ -1,3 +1,7 @@
+## Version 1.0.6
+
+* Set timezones to UTC in Grafana and Graphite
+
 ## Version 1.0.5
 
 * Set StoreRates to true in collectd.conf to ensure counters (especially cpu) do not keep incrementing
