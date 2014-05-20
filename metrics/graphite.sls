@@ -34,6 +34,9 @@ graphite_virtualenv:
     - user: graphite
     - require:
       - file: /srv/graphite/requirements.txt
+    - require_in:
+      - supervisord: supervise-graphite
+
 # pycairo is crazy to build - avoid - so we rely on system-site-packages
 # two lines require specific pip arguments
 
