@@ -1,3 +1,7 @@
+## Version 1.0.7
+
+* Sensible hostname defaults
+
 ## Version 1.0.6
 
 * Set timezones to UTC in Grafana and Graphite
