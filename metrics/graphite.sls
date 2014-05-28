@@ -71,7 +71,7 @@ graphite_virtualenv:
     - watch_in:
       - supervisord: supervise-graphite
 
-/srv/graphite/storage/log/webapp:
+/data/graphite/storage/log/webapp:
   file:
     - directory
     - user: graphite
@@ -89,7 +89,7 @@ graphite_seed:
     - user: graphite
     - require:
       - user: graphite
-      - file: /srv/graphite/storage/log/webapp
+      - file: /data/graphite/storage/log/webapp
     - watch:
       - cmd: graphite_virtualenv
       - file: /srv/graphite/conf

@@ -62,7 +62,7 @@ GRAPHITE_ROOT = '/srv/graphite'
 # need to change these three settings. Note that the default settings for each
 # of these is relative to GRAPHITE_ROOT
 CONF_DIR = '/srv/graphite/data/conf'
-STORAGE_DIR = '/srv/graphite/storage'
+STORAGE_DIR = '/data/graphite/storage'
 CONTENT_DIR = '/srv/graphite/data/webapp/content'
 
 # To further or fully customize the paths, modify the following. Note that the
