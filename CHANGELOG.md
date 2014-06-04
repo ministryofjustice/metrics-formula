@@ -1,3 +1,7 @@
+## Version 1.0.x
+
+* Added tcpconns to collectd
+
 ## Version 1.0.7
 
 * Sensible hostname defaults
