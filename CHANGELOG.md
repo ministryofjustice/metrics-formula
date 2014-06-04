@@ -1,6 +1,6 @@
-## Version 1.0.x
+## Version 1.1.0
 
-* Added tcpconns to collectd
+* Added tcpconns plugin to collectd
 
 ## Version 1.0.7
 
