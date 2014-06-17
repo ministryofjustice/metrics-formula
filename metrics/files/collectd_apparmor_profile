@@ -1,0 +1,39 @@
+#include <tunables/global>
+
+/usr/sbin/collectd {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/nvidia>
+  #include <abstractions/ubuntu-konsole>
+
+
+  capability dac_override,
+  capability ipc_lock,
+  capability sys_ptrace,
+
+
+  /etc/collectd/collectd.conf r,
+  /etc/collectd/filters.conf r,
+  /etc/collectd/thresholds.conf r,
+  /usr/sbin/collectd mr,
+  /usr/share/collectd/types.db r,
+
+
+  /etc/mtab r,
+  /proc/ r,
+  /proc/*/cmdline r,
+  /proc/*/io r,
+  /proc/*/net/dev r,
+  /proc/*/stat r,
+  /proc/*/status r,
+  /proc/*/task/ r,
+  /proc/acpi/battery/ r,
+  /proc/acpi/battery/BAT0/state r,
+  /proc/diskstats r,
+  /proc/loadavg r,
+  /proc/sys/kernel/random/entropy_avail r,
+  /proc/vmstat r,
+  /run/utmp rk,
+  /usr/lib{,32,64}/** mr,
+
+}
