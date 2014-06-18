@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-/usr/sbin/collectd {
+/usr/sbin/collectd flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/nvidia>
