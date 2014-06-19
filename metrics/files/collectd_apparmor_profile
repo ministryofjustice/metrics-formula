@@ -17,6 +17,7 @@
   /etc/collectd/thresholds.conf r,
   /usr/sbin/collectd mr,
   /usr/share/collectd/types.db r,
+  /var/lib/collectd/rrd/** rwk,
 
 
   /etc/mtab r,

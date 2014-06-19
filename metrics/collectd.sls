@@ -35,5 +35,5 @@ collectd-utils:
     - source: salt://metrics/files/collectd_apparmor_profile
     - template: 'jinja'
     - watch_in:
-      - command: reload-profiles
       - service: collectd
+      - cmd: reload-profiles
