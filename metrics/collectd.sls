@@ -32,8 +32,7 @@ collectd-utils:
 
 /etc/apparmor.d/usr.sbin.collectd:
   file.managed:
-    - source: salt://metrics/files/collectd_apparmor_profile
-    - template: 'jinja'
+    - source: salt://metrics/templates/collectd_apparmor_profile
+    - template: jinja
     - watch_in:
       - service: collectd
-      - cmd: reload-profiles
