@@ -135,4 +135,11 @@ graphite_seed:
     - watch_in:
       - service: nginx
 
+/etc/apparmor.d/nginx_local/graphite:
+  file.managed:
+    - source: salt://metrics/templates/graphite/graphite_apparmor_profile
+    - template: jinja
+    - watch_in:
+      - service: nginx
+
 #TODO: subsequent executions should not update anything

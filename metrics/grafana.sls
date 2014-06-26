@@ -55,6 +55,13 @@ grafana.git:
     - watch_in:
       - service: nginx
 
+/etc/apparmor.d/nginx_local/grafana:
+  file.managed:
+    - source: salt://metrics/templates/grafana/grafana_apparmor_profile
+    - template: jinja
+    - watch_in:
+      - service: nginx
+
 {% from 'logstash/lib.sls' import logship with context %}
 {{ logship('grafana-access', '/var/log/nginx/grafana.access.json', 'nginx', ['nginx','grafana','access'], 'rawjson') }}
 {{ logship('grafana-error',  '/var/log/nginx/grafana.error.log', 'nginx', ['nginx','grafana','error'], 'json') }}
