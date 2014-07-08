@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-/usr/sbin/collectd {{salt['pillar.get']('apparmor:profiles:collectd', '')}} {
+/usr/sbin/collectd {{salt['pillar.get']('apparmor:profiles:collectd:enforce', 'flags=(complain)')}} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/nvidia>
