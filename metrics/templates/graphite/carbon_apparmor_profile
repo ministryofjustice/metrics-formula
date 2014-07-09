@@ -10,6 +10,7 @@
 
   /bin/dash rix,
   /proc/*/mounts r,
+  /proc/*/statm r,
   /sbin/ldconfig rix,
   /sbin/ldconfig.real rix,
   /srv/graphite/** mrw,
