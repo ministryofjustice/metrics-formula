@@ -105,14 +105,26 @@ graphite_seed:
              working_dir="/srv/graphite/application/current",
              supervise=True) }}
 
+/etc/init/carbon.conf:
+  file.managed:
+    - source: salt://metrics/files/carbon.conf
+    - user: root
+    - group: root
+    - mode: 644
 
-{{ supervise("carbon",
-             user="graphite",
-             cmd="/srv/graphite/virtualenv/bin/python",
-             args="/srv/graphite/bin/carbon-cache.py --debug start",
-             numprocs=1,
-             supervise=True) }}
+carbon:
+  service:
+    - running
+    - enable: True
+    - require:
+      - file: /etc/init/carbon.conf
 
+/etc/apparmor.d/srv.graphite.bin.carbon-cache.py:
+  file.managed:
+    - source: salt://metrics/templates/graphite/carbon_apparmor_profile
+    - template: jinja
+    - watch_in:
+      - service: carbon
 
 /etc/nginx/conf.d/graphite.conf:
   file:
