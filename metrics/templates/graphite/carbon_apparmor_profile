@@ -1,7 +1,7 @@
 # Last Modified: Wed Jul  9 10:39:12 2014
 #include <tunables/global>
 
-/srv/graphite/bin/carbon-cache.py {
+/srv/graphite/bin/carbon-cache.py {{ salt['pillar.get']('apparmor:profiles:sensu_api:enforce', 'flags=(complain)') }} {
   #include <abstractions/apache2-common>
   #include <abstractions/base>
   #include <abstractions/python>
