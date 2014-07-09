@@ -61,6 +61,8 @@ grafana.git:
     - template: jinja
     - watch_in:
       - service: nginx
+    - require:
+      - file: /etc/apparmor.d/nginx_local
 
 {% from 'logstash/lib.sls' import logship with context %}
 {{ logship('grafana-access', '/var/log/nginx/grafana.access.json', 'nginx', ['nginx','grafana','access'], 'rawjson') }}

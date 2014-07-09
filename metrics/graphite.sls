@@ -107,7 +107,7 @@ graphite_seed:
 
 /etc/init/carbon.conf:
   file.managed:
-    - source: salt://metrics/files/carbon.conf
+    - source: salt://metrics/files/graphite/carbon.conf
     - user: root
     - group: root
     - mode: 644
@@ -153,5 +153,7 @@ carbon:
     - template: jinja
     - watch_in:
       - service: nginx
+    - require:
+      - file: /etc/apparmor.d/nginx_local
 
 #TODO: subsequent executions should not update anything

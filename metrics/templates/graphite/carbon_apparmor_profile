@@ -1,0 +1,18 @@
+# Last Modified: Wed Jul  9 10:39:12 2014
+#include <tunables/global>
+
+/srv/graphite/bin/carbon-cache.py {
+  #include <abstractions/apache2-common>
+  #include <abstractions/base>
+  #include <abstractions/python>
+
+
+
+  /bin/dash rix,
+  /proc/*/mounts r,
+  /sbin/ldconfig rix,
+  /sbin/ldconfig.real rix,
+  /srv/graphite/** mrw,
+  /srv/graphite/virtualenv/bin/python ix,
+
+}
