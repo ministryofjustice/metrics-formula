@@ -1,3 +1,7 @@
+## Version 1.x.0
+
+* Added apparmor profiles
+
 ## Version 1.1.0
 
 * Added tcpconns plugin to collectd
