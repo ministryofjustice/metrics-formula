@@ -27,4 +27,18 @@ Dependencies
 
    `python <https://github.com/ministryofjustice/python-formula>`_
 
+apparmor
+========
 
+This formula includes some simple default apparmor profiles.
+
+App armor is by default in complain mode which means it allows the action and
+logs. To make it deny actions that the profile doesn't cover set the following
+pillar::
+
+  apparmor:
+    profiles:
+      collectd:
+        enforce: ''
+      carbon_cache:
+        enforce: ''

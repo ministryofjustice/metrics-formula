@@ -105,14 +105,26 @@ graphite_seed:
              working_dir="/srv/graphite/application/current",
              supervise=True) }}
 
+/etc/init/carbon.conf:
+  file.managed:
+    - source: salt://metrics/files/graphite/carbon.conf
+    - user: root
+    - group: root
+    - mode: 644
 
-{{ supervise("carbon",
-             user="graphite",
-             cmd="/srv/graphite/virtualenv/bin/python",
-             args="/srv/graphite/bin/carbon-cache.py --debug start",
-             numprocs=1,
-             supervise=True) }}
+carbon:
+  service:
+    - running
+    - enable: True
+    - require:
+      - file: /etc/init/carbon.conf
 
+/etc/apparmor.d/srv.graphite.bin.carbon-cache.py:
+  file.managed:
+    - source: salt://metrics/templates/graphite/carbon_apparmor_profile
+    - template: jinja
+    - watch_in:
+      - service: carbon
 
 /etc/nginx/conf.d/graphite.conf:
   file:
@@ -134,5 +146,14 @@ graphite_seed:
        add_header Access-Control-Allow-Headers "origin, authorization, accept";
     - watch_in:
       - service: nginx
+
+/etc/apparmor.d/nginx_local/graphite:
+  file.managed:
+    - source: salt://metrics/templates/graphite/graphite_apparmor_profile
+    - template: jinja
+    - watch_in:
+      - service: nginx
+    - require:
+      - file: /etc/apparmor.d/nginx_local
 
 #TODO: subsequent executions should not update anything
