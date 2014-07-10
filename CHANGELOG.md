@@ -1,4 +1,4 @@
-## Version 1.x.0
+## Version 1.2.0
 
 * Added apparmor profiles
 
