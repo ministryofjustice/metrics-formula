@@ -1,3 +1,7 @@
+## Version 1.2.x
+
+* Graphite converted to upstart
+
 ## Version 1.2.0
 
 * Added apparmor profiles
