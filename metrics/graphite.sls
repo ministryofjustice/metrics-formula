@@ -114,7 +114,6 @@ graphite-service:
   service.running:
     - name: graphite
     - enable: True
-    - order: last
     - require:
       - file: /etc/init/graphite.conf
       - service: carbon
