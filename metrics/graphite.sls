@@ -1,10 +1,8 @@
-{% from 'supervisor/lib.sls' import supervise with context %}
 {% from 'utils/apps/lib.sls' import app_skeleton with context %}
 
 include:
   - .deps
   - python
-  - supervisor
   - nginx
 
 # graphite had issues with graph rendering with memcache on

@@ -19,8 +19,6 @@ Dependencies
 
    `firewall <https://github.com/ministryofjustice/firewall-formula>`_
 
-   `supervisor <https://github.com/ministryofjustice/supervisor-formula>`_
-
    `nginx <https://github.com/ministryofjustice/nginx-formula>`_
 
    `utils <https://github.com/ministryofjustice/utils-formula>`_
