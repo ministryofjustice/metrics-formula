@@ -1,10 +1,8 @@
-{% from 'supervisor/lib.sls' import supervise with context %}
 {% from 'utils/apps/lib.sls' import app_skeleton with context %}
 
 include:
   - .deps
   - python
-  - supervisor
   - nginx
 
 # graphite had issues with graph rendering with memcache on
@@ -35,7 +33,7 @@ graphite_virtualenv:
     - require:
       - file: /srv/graphite/requirements.txt
     - require_in:
-      - supervisord: supervise-graphite
+      - service: graphite-service
 
 # pycairo is crazy to build - avoid - so we rely on system-site-packages
 # two lines require specific pip arguments
@@ -48,7 +46,7 @@ graphite_virtualenv:
     - user: graphite
     - group: graphite
     - watch_in:
-      - supervisord: supervise-graphite
+      - service: graphite-service
 
 
 /srv/graphite/application/current/graphite/local_settings.py:
@@ -59,7 +57,7 @@ graphite_virtualenv:
     - user: graphite
     - group: graphite
     - watch_in:
-      - supervisord: supervise-graphite
+      - service: graphite-service
 
 
 /srv/graphite/conf:
@@ -69,7 +67,8 @@ graphite_virtualenv:
     - user: graphite
     - group: graphite
     - watch_in:
-      - supervisord: supervise-graphite
+      - service: graphite-service
+      - service: carbon
 
 /srv/graphite/storage/log/webapp:
   file:
@@ -95,15 +94,14 @@ graphite_seed:
       - file: /srv/graphite/conf
       - file: /srv/graphite/application/current/graphite/local_settings.py
     - watch_in:
-      - supervisord: supervise-graphite
+      - service: graphite-service
 
-
-{{ supervise("graphite",
-             cmd="/srv/graphite/virtualenv/bin/gunicorn",
-             args="graphite.wsgi:application -b unix:///var/run/graphite/graphite.sock",
-             numprocs=1,
-             working_dir="/srv/graphite/application/current",
-             supervise=True) }}
+/etc/init/graphite.conf:
+  file.managed:
+    - source: salt://metrics/files/graphite/graphite.conf
+    - user: root
+    - group: root
+    - mode: 644
 
 /etc/init/carbon.conf:
   file.managed:
@@ -112,9 +110,16 @@ graphite_seed:
     - group: root
     - mode: 644
 
+graphite-service:
+  service.running:
+    - name: graphite
+    - enable: True
+    - require:
+      - file: /etc/init/graphite.conf
+      - service: carbon
+
 carbon:
-  service:
-    - running
+  service.running:
     - enable: True
     - require:
       - file: /etc/init/carbon.conf
@@ -155,5 +160,3 @@ carbon:
       - service: nginx
     - require:
       - file: /etc/apparmor.d/nginx_local
-
-#TODO: subsequent executions should not update anything
