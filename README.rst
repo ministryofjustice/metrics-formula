@@ -34,31 +34,41 @@ Server
 Firewall
 ~~~~~~~~
 
-The monitoring server requires the following ports to be open incoming:
+The monitoring server requires the following ports to be open incoming from the clients:
 
-**TCP**
 
 * 2003
-* 8215
-
-**UDP**
-
-* 2514
 * 2513
+* 5762
+* 6379
+* 80
   
+
+Dependencies
+~~~~~~~~~~~~
+
+The server requires the following states to be included:
+
+* metrics.server
+* logstash.server
+* sensu.server
+
+
+
+Client
+------
+
+On the client side (the instances that will ship logs to the monitoring server) we need the following:
 
 Dependencies
 ~~~~~~~~~~~~
 
 The server requires the following states to be included along side this one:
 
-* logstash.server
-* sensu.server
+* metrics.client
+* logstash.client
+* sensu.client
 
-Client
-------
-
-On the client side (the instances that will ship logs to the monitoring server) we need the following:
 
 Hosts File
 ~~~~~~~~~
