@@ -25,6 +25,48 @@ Dependencies
 
    `python <https://github.com/ministryofjustice/python-formula>`_
 
+Usage
+=====
+
+Server
+------
+
+Firewall
+~~~~~~~~
+
+The monitoring server requires the following ports to be open incoming:
+
+**TCP**
+
+* 2003
+* 8215
+
+**UDP**
+
+* 2514
+* 2513
+  
+
+Dependencies
+~~~~~~~~~~~~
+
+The server requires the following states to be included along side this one:
+
+* logstash.server
+* sensu.server
+
+Client
+------
+
+On the client side (the instances that will ship logs to the monitoring server) we need the following:
+
+Hosts File
+~~~~~~~~~
+
+  [internal IP of monitoring server] monitoring.local graphite.local
+
+
+
 apparmor
 ========
 
