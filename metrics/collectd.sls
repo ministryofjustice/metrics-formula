@@ -5,13 +5,18 @@ include:
 
 collectd-core:
   pkg.installed:
+  {% if collectd.revision %}
     - version: {{ collectd.revision }}
+  {% endif %}
     - watch_in:
       - service: collectd
 
 collectd:
   pkg.installed:
+  {% if collectd.revision %}
     - version: {{ collectd.revision }}
+  {% endif %}
+
     - watch_in:
       - service: collectd
   service:
