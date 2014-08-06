@@ -28,6 +28,9 @@ Dependencies
 Usage
 =====
 
+.. image:: https://raw.githubusercontent.com/ministryofjustice/metrics-formula/OMGDOCS/docs/monitoring-server.png
+
+
 Server
 ------
 
