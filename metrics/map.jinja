@@ -16,12 +16,16 @@
 
 
 {% set collectd = salt['grains.filter_by']({
-    'Debian': {
+    'Ubuntu-12.04': {
         'carbon': 'monitoring.local',
         'revision': '5.4.0-ppa1~precise1'
     },
-    'default': 'Debian',
-}, merge=salt['pillar.get']('collectd',{})) %}
+    'Ubuntu-14.04': {
+        'carbon': 'monitoring.local',
+        'revision': ''
+    },
+    'default': 'Ubuntu-12.04',
+}, grain='osfinger', merge=salt['pillar.get']('collectd',{})) %}
 
 
 {% set beaver = salt['grains.filter_by']({
