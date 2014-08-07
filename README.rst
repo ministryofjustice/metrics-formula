@@ -25,60 +25,6 @@ Dependencies
 
    `python <https://github.com/ministryofjustice/python-formula>`_
 
-Usage
-=====
-
-.. image:: https://raw.githubusercontent.com/ministryofjustice/metrics-formula/OMGDOCS/docs/monitoring-server.png
-
-
-Server
-------
-
-Firewall
-~~~~~~~~
-
-The monitoring server requires the following ports to be open incoming from the clients:
-
-
-* 2003
-* 2513
-* 5762
-* 6379
-* 80
-  
-
-Dependencies
-~~~~~~~~~~~~
-
-The server requires the following states to be included:
-
-* metrics.server
-* logstash.server
-* sensu.server
-
-
-
-Client
-------
-
-On the client side (the instances that will ship logs to the monitoring server) we need the following:
-
-Dependencies
-~~~~~~~~~~~~
-
-The server requires the following states to be included along side this one:
-
-* metrics.client
-* logstash.client
-* sensu.client
-
-
-Hosts File
-~~~~~~~~~
-
-  [internal IP of monitoring server] monitoring.local graphite.local
-
-
 
 apparmor
 ========
