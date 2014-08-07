@@ -2,6 +2,11 @@
 metrics
 =======
 
+Usage
+-----
+
+You shouldn't use this formula directly unless you know what you are doing.  If you want to set up monitoring on your servers you should look at the monitoring formula.
+
 Install and configure graphite, collectd and statsd (via bucky) and grafana
 
 .. note::
@@ -24,6 +29,7 @@ Dependencies
    `utils <https://github.com/ministryofjustice/utils-formula>`_
 
    `python <https://github.com/ministryofjustice/python-formula>`_
+
 
 apparmor
 ========
