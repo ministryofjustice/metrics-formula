@@ -1,3 +1,7 @@
+## Version x.x.x
+
+* Increase & synchronise resolution of graphite and collectd
+
 ## Version 1.2.2
 
 * Add extra upstart job to correctly create run dirs for graphite at startup
