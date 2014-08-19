@@ -103,6 +103,13 @@ graphite_seed:
     - group: root
     - mode: 644
 
+/etc/init/graphite-make-dirs.conf:
+  file.managed:
+    - source: salt://metrics/files/graphite/graphite-make-dirs.conf
+    - user: root
+    - group: root
+    - mode: 644
+
 /etc/init/carbon.conf:
   file.managed:
     - source: salt://metrics/files/graphite/carbon.conf
