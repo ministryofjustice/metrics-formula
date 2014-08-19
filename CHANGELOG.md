@@ -1,4 +1,4 @@
-## Version 1.2.x
+## Version 1.2.2
 
 * Add extra upstart job to correctly create run dirs for graphite at startup
 
