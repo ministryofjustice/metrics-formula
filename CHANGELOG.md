@@ -1,3 +1,7 @@
+# Versoin 1.x.0
+
+* Ask statsd plugin to create derived metrics for timers `*-count`
+
 ## Version 1.3.0
 
 * Increase & synchronise resolution of graphite and collectd
