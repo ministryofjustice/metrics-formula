@@ -18,7 +18,8 @@
 {% set collectd = salt['grains.filter_by']({
     'Debian': {
         'carbon': 'monitoring.local',
-        'revision': '5.4.0-ppa1~precise1'
+        'revision': '5.4.0-ppa1~precise1',
+        'prefix': None
     },
     'default': 'Debian',
 }, merge=salt['pillar.get']('collectd',{})) %}
