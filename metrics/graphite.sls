@@ -70,6 +70,14 @@ graphite_virtualenv:
       - service: graphite-service
       - service: carbon
 
+/srv/graphite/storage:
+  file:
+    - directory
+    - user: graphite
+    - group: graphite
+    - require:
+      - user: graphite
+
 /srv/graphite/storage/log/webapp:
   file:
     - directory
@@ -78,6 +86,7 @@ graphite_virtualenv:
     - makedirs: True
     - require:
       - user: graphite
+      - file: /srv/graphite/storage
 
 graphite_seed:
   cmd:
