@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+#
+# This file is included from the contrib/ directory in 
+# https://github.com/graphite-project/whisper
+#
+# Specifically, https://github.com/graphite-project/whisper/blob/e0e06c0dfbc9b4d6c90ed6662bd87dfa9edd5413/contrib/whisper-auto-resize.py
+# 
+
 import sys, os, fnmatch
 from subprocess import call
 from optparse import OptionParser
