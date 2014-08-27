@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 cd ${HOME}
 virtualenv --system-site-packages virtualenv
 source virtualenv/bin/activate
