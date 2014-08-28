@@ -1,0 +1,62 @@
+#!/bin/bash
+
+DB_BASE="/srv/graphite/storage/whisper"
+CONF_BASE="/srv/graphite/conf"
+CARBON_CONF="${CONF_BASE}/carbon.conf"
+STORAGE_SCHEMAS_CONF="${CONF_BASE}/storage-schemas.conf"
+STORAGE_AGGREGATION_CONF="${CONF_BASE}/storage-aggregation.conf"
+AUTO_RESIZE="/srv/graphite/virtualenv/bin/whisper-auto-resize.py"
+
+FLAG_FILE="${DB_BASE}/.update_whisper_files_if_config_changed.LAST_RESIZE_RUN"
+
+E_MISSING_REQ=2
+E_RESIZE_FAILED=3
+
+if [[ ! -d $DB_BASE ]]; then
+  echo "FATAL: whisper db dir ${DB_BASE} is not present"
+  exit $E_MISSING_REQ
+fi
+
+if [[ ! -f $STORAGE_SCHEMAS_CONF ]]; then
+  echo "FATAL: conf file ${STORAGE_SCHEMAS_CONF} is not present"
+  exit $E_MISSING_REQ
+fi
+
+if [[ ! -f $STORAGE_AGGREGATION_CONF ]]; then
+  echo "FATAL: conf file ${STORAGE_AGGREGATION_CONF} is not present"
+  exit $E_MISSING_REQ
+fi
+
+if [[ ! -f $CARBON_CONF ]]; then
+  echo "FATAL: conf file ${CARBON_CONF} is not present"
+  exit $E_MISSING_REQ
+fi
+
+if [[ ! -f $AUTO_RESIZE ]]; then
+  echo "FATAL: missing file ${AUTO_RESIZE}"
+  exit $E_MISSING_REQ
+fi
+
+run_resize=0
+if [[ -f $FLAG_FILE ]]; then
+  if [[ $CARBON_CONF -nt $FLAG_FILE ]]; then
+    run_resize=1
+  elif [[ $STORAGE_SCHEMAS_CONF -nt $FLAG_FILE ]]; then
+    run_resize=1
+  elif [[ $STORAGE_AGGREGATION_CONF -nt $FLAG_FILE ]]; then
+    run_resize=1
+  fi
+else
+  run_resize=1
+fi
+
+if [[ $run_resize == 1 ]]; then
+  $AUTO_RESIZE --doit --quiet $DB_BASE $CONF_BASE
+  if [[ $? == 0 ]]; then
+    touch $FLAG_FILE
+  else
+    echo "FATAL: $AUTO_RESIZE failed!"
+    exit $E_RESIZE_FAIL
+  fi
+fi
+

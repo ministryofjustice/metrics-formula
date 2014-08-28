@@ -35,6 +35,24 @@ graphite_virtualenv:
     - require_in:
       - service: graphite-service
 
+/srv/graphite/virtualenv/bin/whisper-auto-resize.py:
+  file:
+    - managed
+    - source: salt://metrics/files/graphite/contrib/whisper-auto-resize.py
+    - user: root
+    - group: graphite
+    - mode: 0755
+    - require:
+      - cmd: graphite_virtualenv
+
+/srv/graphite/bin/update_whisper_files_if_config_changed:
+  file:
+    - managed
+    - source: salt://metrics/files/graphite/contrib/update_whisper_files_if_config_changed
+    - user: root
+    - group: graphite
+    - mode: 0755
+
 # pycairo is crazy to build - avoid - so we rely on system-site-packages
 # two lines require specific pip arguments
 
@@ -125,6 +143,8 @@ graphite_seed:
     - user: root
     - group: root
     - mode: 644
+    - require:
+      - file: /srv/graphite/bin/update_whisper_files_if_config_changed
 
 graphite-service:
   service.running:

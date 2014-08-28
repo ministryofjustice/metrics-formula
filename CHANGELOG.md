@@ -1,3 +1,8 @@
+## Version x.x.x
+
+* Increase & synchronise resolution of graphite and collectd
+* Automatically resize whisper databases on carbon restart, if necessary.
+
 ## Version 1.2.2
 
 * Add extra upstart job to correctly create run dirs for graphite at startup
