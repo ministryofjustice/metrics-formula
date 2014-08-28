@@ -1,6 +1,7 @@
 # Versoin 1.x.0
 
-* Ask statsd plugin to create derived metrics for timers `*-count`
+* Ask statsd plugin to create derived metrics for timers `*-count`,
+  `*-percentile-90`, and upper and lower bounds.
 
 ## Version 1.3.0
 
