@@ -1,7 +1,8 @@
-## Version x.x.x
+## Version 1.3.0
 
 * Increase & synchronise resolution of graphite and collectd
 * Automatically resize whisper databases on carbon restart, if necessary.
+* Fix for carbon start bug introduced by database resize
 
 ## Version 1.2.2
 
