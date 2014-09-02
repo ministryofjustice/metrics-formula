@@ -1,3 +1,8 @@
+# Versoin 1.x.0
+
+* Ask statsd plugin to create derived metrics for timers `*-count`,
+  `*-percentile-50`, `*-percentile-95`, and upper and lower bounds.
+
 ## Version 1.3.0
 
 * Increase & synchronise resolution of graphite and collectd
