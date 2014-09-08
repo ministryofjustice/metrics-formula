@@ -1,3 +1,7 @@
 dependencies:
 - git@github.com:ministryofjustice/nginx-formula.git
 - git@github.com:ministryofjustice/apparmor-formula.git
+
+entry:
+ - metrics.server
+ - metrics.client
