@@ -1,4 +1,4 @@
-# Versoin 1.x.0
+# Versoin 1.4.0
 
 * Ask statsd plugin to create derived metrics for timers `*-count`,
   `*-percentile-50`, `*-percentile-95`, and upper and lower bounds.
