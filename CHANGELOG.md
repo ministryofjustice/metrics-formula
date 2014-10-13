@@ -1,4 +1,8 @@
-# Versoin 1.4.0
+# CURRENT
+
+* Support deployment to Ubuntu 14.04.
+
+# Version 1.4.0
 
 * Ask statsd plugin to create derived metrics for timers `*-count`,
   `*-percentile-50`, `*-percentile-95`, and upper and lower bounds.
