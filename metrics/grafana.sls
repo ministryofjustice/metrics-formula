@@ -11,7 +11,7 @@ include:
 grafana.git:
   git:
     - latest
-    - name: https://github.com/grafana/grafana.git
+    - name: {{ grafana.repo }}
     - rev: {{ grafana.revision }}
     - target: /srv/grafana/application/{{ grafana.revision }}
 

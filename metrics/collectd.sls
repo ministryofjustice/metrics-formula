@@ -3,32 +3,28 @@
 include:
   - apparmor
 
-collectd-core:
-  pkg.installed:
-    - version: {{ collectd.revision }}
-    - watch_in:
-      - service: collectd
 
 collectd:
   pkg.installed:
-    - version: {{ collectd.revision }}
     - watch_in:
       - service: collectd
+    - skip_verify: True
   service:
     - running
     - enable: True
 
+
 collectd-utils:
-  pkg:
-    - installed
+  pkg.installed
+
 
 /etc/collectd/collectd.conf:
-  file:
-    - managed
+  file.managed:
     - source: salt://metrics/templates/collectd/collectd.conf
     - template: jinja
     - watch_in:
       - service: collectd
+
 
 /etc/apparmor.d/usr.sbin.collectd:
   file.managed:

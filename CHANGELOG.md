@@ -1,4 +1,9 @@
-# Versoin 1.4.0
+# Version
+
+* Enable to build from dedicated git repo mirrors
+* Prepackage all packagess
+
+# Version 1.4.0
 
 * Ask statsd plugin to create derived metrics for timers `*-count`,
   `*-percentile-50`, `*-percentile-95`, and upper and lower bounds.

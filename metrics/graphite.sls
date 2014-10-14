@@ -1,127 +1,61 @@
-{% from 'utils/apps/lib.sls' import app_skeleton with context %}
+{% from 'metrics/map.jinja' import graphite with context %}
 
 include:
-  - .deps
   - python
   - nginx
 
-# graphite had issues with graph rendering with memcache on
-#  - memcached
+
+graphite:
+  pkg.installed:
+    - pkgs:
+        - dsd-python-gunicorn
+        - graphite-web
+        - graphite-carbon
+    - skip_verify: True
 
 
-{{ app_skeleton('graphite') }}
-
-python-cairo-dev:
-  pkg:
-    - installed
-
-
-/srv/graphite/requirements.txt:
-  file:
-    - managed
-    - source: salt://metrics/files/graphite/requirements.txt
-    - user: graphite
-    - group: graphite
-
-
-graphite_virtualenv:
-  cmd:
-    - script
-    - source: salt://metrics/files/graphite/requirements.sh
-    - unless: 'test -e /srv/graphite/.graphite_virtualenv.done'
-    - user: graphite
+graphite-data:
+  file.directory:
+    - name: {{graphite.data}}/whisper
+    - user: _graphite
+    - group: _graphite
+    - makedirs: True
     - require:
-      - file: /srv/graphite/requirements.txt
-    - require_in:
-      - service: graphite-service
+      - pkg: graphite
 
-/srv/graphite/virtualenv/bin/whisper-auto-resize.py:
+
+/usr/bin/whisper-auto-resize.py:
   file:
     - managed
     - source: salt://metrics/files/graphite/contrib/whisper-auto-resize.py
     - user: root
-    - group: graphite
+    - group: _graphite
     - mode: 0755
     - require:
-      - cmd: graphite_virtualenv
+      - pkg: graphite
 
-/srv/graphite/bin/update_whisper_files_if_config_changed:
+
+/usr/bin/update_whisper_files_if_config_changed:
   file:
     - managed
     - source: salt://metrics/files/graphite/contrib/update_whisper_files_if_config_changed
     - user: root
-    - group: graphite
+    - group: _graphite
     - mode: 0755
-
-# pycairo is crazy to build - avoid - so we rely on system-site-packages
-# two lines require specific pip arguments
-
-
-/srv/graphite/application/current/graphite/wsgi.py:
-  file:
-    - managed
-    - source: salt://metrics/files/graphite/graphite.wsgi
-    - user: graphite
-    - group: graphite
-    - watch_in:
-      - service: graphite-service
+    - require:
+      - pkg: graphite
 
 
-/srv/graphite/application/current/graphite/local_settings.py:
+/etc/graphite/local_settings.py:
   file:
     - managed
     - source: salt://metrics/templates/graphite/local_settings.py
     - template: jinja
-    - user: graphite
-    - group: graphite
+    - user: _graphite
+    - group: _graphite
     - watch_in:
       - service: graphite-service
 
-
-/srv/graphite/conf:
-  file:
-    - recurse
-    - source: salt://metrics/files/graphite/conf
-    - user: graphite
-    - group: graphite
-    - watch_in:
-      - service: graphite-service
-      - service: carbon
-
-/srv/graphite/storage:
-  file:
-    - directory
-    - user: graphite
-    - group: graphite
-    - require:
-      - user: graphite
-
-/srv/graphite/storage/log/webapp:
-  file:
-    - directory
-    - user: graphite
-    - group: graphite
-    - makedirs: True
-    - require:
-      - user: graphite
-      - file: /srv/graphite/storage
-
-graphite_seed:
-  cmd:
-    - script
-    - source: salt://metrics/files/graphite/graphite_seed.sh
-    - cwd: /srv/graphite/application/current
-    - unless: 'test -e /srv/graphite/.graphite_seed.done'
-    - user: graphite
-    - require:
-      - user: graphite
-      - file: /srv/graphite/storage/log/webapp
-    - watch:
-      - cmd: graphite_virtualenv
-      - file: /srv/graphite/conf
-      - file: /srv/graphite/application/current/graphite/local_settings.py
-    - watch_in:
-      - service: graphite-service
 
 /etc/init/graphite.conf:
   file.managed:
@@ -130,6 +64,7 @@ graphite_seed:
     - group: root
     - mode: 644
 
+
 /etc/init/graphite-make-dirs.conf:
   file.managed:
     - source: salt://metrics/files/graphite/graphite-make-dirs.conf
@@ -137,14 +72,12 @@ graphite_seed:
     - group: root
     - mode: 644
 
-/etc/init/carbon.conf:
-  file.managed:
-    - source: salt://metrics/files/graphite/carbon.conf
-    - user: root
-    - group: root
-    - mode: 644
-    - require:
-      - file: /srv/graphite/bin/update_whisper_files_if_config_changed
+
+/usr/share/graphite-web/wsgi.py:
+  file.symlink:
+    - target: /usr/share/graphite-web/graphite.wsgi.py
+    - force: True
+
 
 graphite-service:
   service.running:
@@ -152,20 +85,44 @@ graphite-service:
     - enable: True
     - require:
       - file: /etc/init/graphite.conf
-      - service: carbon
+      - file: /usr/share/graphite-web/wsgi.py
+      - service: carbon-cache
 
-carbon:
+
+/etc/carbon:
+  file.recurse:
+    - source: salt://metrics/templates/graphite/carbon
+    - template: jinja
+    - user: _graphite
+    - group: _graphite
+    - watch_in:
+      - service: graphite-service
+      - service: carbon-cache
+
+
+/etc/default/graphite-carbon:
+  file.managed:
+    - source: salt://metrics/files/graphite/graphite-carbon
+    - require:
+        - pkg: graphite
+    - watch_in:
+      - service: carbon-cache
+
+
+carbon-cache:
   service.running:
     - enable: True
     - require:
-      - file: /etc/init/carbon.conf
+        - pkg: graphite
+
 
 /etc/apparmor.d/srv.graphite.bin.carbon-cache.py:
   file.managed:
     - source: salt://metrics/templates/graphite/carbon_apparmor_profile
     - template: jinja
     - watch_in:
-      - service: carbon
+      - service: carbon-cache
+
 
 /etc/nginx/conf.d/graphite.conf:
   file:
@@ -180,13 +137,14 @@ carbon:
       appslug: graphite
       server_name: graphite.*
       is_default: False
-      root_dir: /srv/graphite/data/webapp
+      root_dir: /usr/share/graphite-web
       headers:
        add_header Access-Control-Allow-Origin "*";
        add_header Access-Control-Allow-Methods "GET, OPTIONS";
        add_header Access-Control-Allow-Headers "origin, authorization, accept";
     - watch_in:
       - service: nginx
+
 
 /etc/apparmor.d/nginx_local/graphite:
   file.managed:

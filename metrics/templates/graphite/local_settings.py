@@ -1,8 +1,6 @@
 {% from 'metrics/map.jinja' import graphite with context %}
-
 ## Graphite local_settings.py
 # Edit this file to customize the default Graphite webapp settings
-#
 # Additional customizations to Django settings can be added to this file as well
 
 #####################################
@@ -28,9 +26,10 @@ TIME_ZONE = 'UTC'
 #DOCUMENTATION_URL = "http://graphite.readthedocs.org/"
 
 # Logging
-#LOG_RENDERING_PERFORMANCE = True
-#LOG_CACHE_PERFORMANCE = True
-#LOG_METRIC_ACCESS = True
+# True see: https://answers.launchpad.net/graphite/+question/159731
+LOG_RENDERING_PERFORMANCE = True
+LOG_CACHE_PERFORMANCE = True
+LOG_METRIC_ACCESS = True
 
 # Enable full debug page display on exceptions (Internal Server Error pages)
 DEBUG = True
@@ -56,14 +55,14 @@ DEBUG = True
 #####################################
 # Change only GRAPHITE_ROOT if your install is merely shifted from /opt/graphite
 # to somewhere else
-GRAPHITE_ROOT = '/srv/graphite'
+GRAPHITE_ROOT = '/usr/share/graphite-web'
 
 # Most installs done outside of a separate tree such as /opt/graphite will only
 # need to change these three settings. Note that the default settings for each
 # of these is relative to GRAPHITE_ROOT
-CONF_DIR = '/srv/graphite/data/conf'
-STORAGE_DIR = '/srv/graphite/storage'
-CONTENT_DIR = '/srv/graphite/data/webapp/content'
+CONF_DIR = '/etc/graphite'
+STORAGE_DIR = '{{graphite.data}}'
+CONTENT_DIR = '/usr/share/graphite-web/static'
 
 # To further or fully customize the paths, modify the following. Note that the
 # default settings for each of these are relative to CONF_DIR and STORAGE_DIR
@@ -74,11 +73,11 @@ CONTENT_DIR = '/srv/graphite/data/webapp/content'
 
 ## Data directories
 # NOTE: If any directory is unreadable in DATA_DIRS it will break metric browsing
-#WHISPER_DIR = '/opt/graphite/storage/whisper'
+WHISPER_DIR = '/var/lib/graphite/whisper'
 #RRD_DIR = '/opt/graphite/storage/rrd'
 #DATA_DIRS = [WHISPER_DIR, RRD_DIR] # Default: set from the above variables
-#LOG_DIR = '/opt/graphite/storage/log/webapp'
-#INDEX_FILE = '/opt/graphite/storage/index'  # Search index file
+LOG_DIR = '/var/log/graphite'
+INDEX_FILE = '/var/lib/graphite/search_index'  # Search index file
 
 
 #####################################
@@ -149,17 +148,17 @@ EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 # The default is 'django.db.backends.sqlite3' with file 'graphite.db'
 # located in STORAGE_DIR
 #
-#DATABASES = {
-#    'default': {
-#        'NAME': '/opt/graphite/storage/graphite.db',
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'USER': '',
-#        'PASSWORD': '',
-#        'HOST': '',
-#        'PORT': ''
-#    }
-#}
-#
+DATABASES = {
+    'default': {
+        'NAME': '{{graphite.data}}/graphite.db',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': ''
+    }
+}
+
 
 
 #########################
@@ -202,10 +201,3 @@ EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 #####################################
 # Uncomment the following line for direct access to Django settings such as
 # MIDDLEWARE_CLASSES or APPS
-from graphite import app_settings
-
-app_settings.INSTALLED_APPS += ('django.contrib.staticfiles',)
-
-
-STATIC_URL = '/content/'
-STATIC_ROOT = '/srv/graphite/data/webapp/content'

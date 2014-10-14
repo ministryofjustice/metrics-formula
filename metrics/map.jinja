@@ -9,7 +9,8 @@
 
 {% set graphite = salt['grains.filter_by']({
     'Debian': {
-        'secret_key': 'updateme'
+        'secret_key': 'updateme',
+        'data': '/data/graphite'
     },
     'default': 'Debian',
 }, merge=salt['pillar.get']('graphite',{})) %}
