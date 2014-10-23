@@ -1,4 +1,4 @@
-# CURRENT
+# Version 1.4.1
 
 * Support deployment to Ubuntu 14.04.
 
