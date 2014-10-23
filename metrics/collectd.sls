@@ -34,10 +34,26 @@ collectd-utils:
     - watch_in:
       - service: collectd
 
-/etc/collectd/collectd.conf.d:
+# The logic below is pretty warped but it seems like the only way
+# for salt to treat a managed directory as idempotent to ensure
+# that changes in state are not incorrectly generated.
+
+collectd-confd-clean:
   file.directory:
+    - name: /etc/collectd/collectd.conf.d
     - mode: 755
     - clean: True
+    - require:
+      - file: collectd-confd-dir
+      - pkg: collectd
+
+collectd-confd-dir:
+  file.directory:
+    - name: /etc/collectd/collectd.conf.d
+    - mode: 755
+    - require:
+      - pkg: collectd
+
 
 # hangover from PPA collectd, we dont use
 /etc/collectd/filters.conf:
