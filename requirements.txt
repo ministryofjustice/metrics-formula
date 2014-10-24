@@ -1,0 +1,2 @@
+Fabric==1.8.1
+git+http://github.com/ministryofjustice/cotton.git@v0.2.5-cc#egg=cotton
