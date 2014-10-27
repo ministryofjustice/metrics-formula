@@ -1,3 +1,8 @@
+# CURRENT
+
+* Include and cleanly manage the collectd.conf.d dir
+* Removed unused filters.conf and thresholds.conf files
+
 # Version 1.4.1
 
 * Support deployment to Ubuntu 14.04.
