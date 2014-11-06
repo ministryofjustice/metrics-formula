@@ -2,6 +2,7 @@
 
 include:
   - apparmor
+  - firewall
 
 collectd-core:
   pkg.installed:
@@ -69,3 +70,6 @@ collectd-confd-dir:
     - template: jinja
     - watch_in:
       - service: collectd
+
+{% from 'firewall/lib.sls' import firewall_enable with context %}
+{{ firewall_enable('statsd', 8125, proto='udp') }}

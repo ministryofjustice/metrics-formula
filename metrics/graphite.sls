@@ -4,6 +4,7 @@ include:
   - .deps
   - python
   - nginx
+  - firewall
 
 # graphite had issues with graph rendering with memcache on
 #  - memcached
@@ -196,3 +197,7 @@ carbon:
       - service: nginx
     - require:
       - file: /etc/apparmor.d/nginx_local
+
+{% from 'firewall/lib.sls' import firewall_enable with context %}
+{{ firewall_enable('graphite', 2003, proto='tcp') }}
+{{ firewall_enable('graphite', 2004, proto='tcp') }}
