@@ -201,3 +201,4 @@ carbon:
 {% from 'firewall/lib.sls' import firewall_enable with context %}
 {{ firewall_enable('graphite', 2003, proto='tcp') }}
 {{ firewall_enable('graphite', 2004, proto='tcp') }}
+{{ firewall_enable('graphite', 7002, proto='tcp') }}
