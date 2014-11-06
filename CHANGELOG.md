@@ -1,4 +1,4 @@
-# CURRENT
+# Version 1.4.2
 
 * BUG: Ensure firewall
 * Include and cleanly manage the collectd.conf.d dir
