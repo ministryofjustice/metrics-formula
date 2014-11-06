@@ -1,5 +1,6 @@
 # CURRENT
 
+* BUG: Ensure firewall
 * Include and cleanly manage the collectd.conf.d dir
 * Removed unused filters.conf and thresholds.conf files
 
