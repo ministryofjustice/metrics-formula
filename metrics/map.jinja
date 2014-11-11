@@ -5,6 +5,7 @@
         'graphiteUrl': '//"+window.location.hostname.replace(/^grafana/,"graphite")+(window.location.port ? ":" + window.location.port : "")+"',
     },
     'default': 'Debian',
+    'index': '"grafana-dash"'
 }, merge=salt['pillar.get']('grafana', {})) %}
 
 {% set graphite = salt['grains.filter_by']({
