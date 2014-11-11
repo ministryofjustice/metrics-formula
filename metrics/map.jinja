@@ -3,6 +3,7 @@
         'revision': 'v1.5.3',
         'elasticsearchUrl': '//"+window.location.hostname.replace(/^grafana/,"elasticsearch")+(window.location.port ? ":" + window.location.port : "")+"',
         'graphiteUrl': '//"+window.location.hostname.replace(/^grafana/,"graphite")+(window.location.port ? ":" + window.location.port : "")+"',
+        'index': '"grafana-dash"',
     },
     'default': 'Debian',
 }, merge=salt['pillar.get']('grafana', {})) %}
