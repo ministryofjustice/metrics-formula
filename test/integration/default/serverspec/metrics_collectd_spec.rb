@@ -6,9 +6,12 @@ set :backend, :exec
 set :path, '/sbin:/usr/local/sbin:$PATH'
 
 describe "collectd setup" do
+
+  collectd_revision = "5.4.0-ppa1~precise1"
+
   %w(collectd collectd-core).each do |pkg|
     describe package(pkg) do
-      it { should be_installed.with_version("5.4.0-ppa1~precise1") }
+      it { should be_installed.with_version(collectd_revision) }
     end
   end
 
@@ -35,4 +38,5 @@ describe "collectd setup" do
     it{ should be_enabled }
     it{ should be_running }
   end
+
 end
