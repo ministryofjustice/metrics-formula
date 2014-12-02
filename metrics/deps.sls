@@ -3,3 +3,4 @@ statistics_pkgs:
     - installed
     - pkgs:
       - gcc
+      - git
