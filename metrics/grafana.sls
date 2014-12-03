@@ -36,6 +36,35 @@ grafana.git:
     - group: root
     - mode: 644 
     - template: jinja
+    - require:
+      - file: /srv/grafana/application/current
+
+/srv/grafana/application/current/src/app/dashboards/instance.js:
+  file.managed:
+    - source: salt://metrics/files/grafana/instance.js
+    - user: root
+    - group: root
+    - mode: 755 
+    - require:
+      - file: /srv/grafana/application/current
+
+/srv/grafana/application/current/src/app/dashboards/overview.js:
+  file.managed:
+    - source: salt://metrics/files/grafana/overview.js
+    - user: root
+    - group: root
+    - mode: 755 
+    - require:
+      - file: /srv/grafana/application/current
+
+/srv/grafana/application/current/src/app/dashboards/monitoring_health.js:
+  file.managed:
+    - source: salt://metrics/files/grafana/monitoring_health.js
+    - user: root
+    - group: root
+    - mode: 755 
+    - require:
+      - file: /srv/grafana/application/current
 
 /etc/nginx/conf.d/grafana.conf:
   file:
