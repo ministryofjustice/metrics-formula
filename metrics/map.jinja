@@ -4,6 +4,7 @@
         'elasticsearchUrl': '//"+window.location.hostname.replace(/^grafana/,"elasticsearch")+(window.location.port ? ":" + window.location.port : "")+"',
         'graphiteUrl': '//"+window.location.hostname.replace(/^grafana/,"graphite")+(window.location.port ? ":" + window.location.port : "")+"',
         'default_route': '/dashboard/script/overview.js',
+        'index': '"grafana-dash"',
     },
     'default': 'Debian',
 }, merge=salt['pillar.get']('grafana', {})) %}
@@ -20,7 +21,8 @@
 {% set collectd = salt['grains.filter_by']({
     'Ubuntu-12.04': {
         'carbon': 'monitoring.local',
-        'revision': '5.4.0-ppa1~precise1'
+        'revision': '5.4.0-ppa1~precise1',
+        'prefix': None
     },
     'default': {
         'carbon': 'monitoring.local',
