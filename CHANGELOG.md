@@ -1,3 +1,7 @@
+# CURRENT
+
+* Allow specification of graphite.data_dir (default /srv/graphite/storage)
+
 # Version 1.4.2
 
 * BUG: Ensure firewall
