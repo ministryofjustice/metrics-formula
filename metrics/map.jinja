@@ -24,7 +24,8 @@
     },
     'default': {
         'carbon': 'monitoring.local',
-        'revision': False
+        'revision': False,
+        'prefix': None,
     },
 }, grain='osfinger', merge=salt['pillar.get']('collectd',{})) %}
 
