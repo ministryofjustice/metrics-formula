@@ -3,6 +3,11 @@
 * Allow specification of graphite.data_dir (default /srv/graphite/storage)
 * Include grafana scripted dashboards: overview.js, instance.js, monitoring_health.js
 
+# Version 1.5.0
+
+* Allow collectd graphite prefix to be set via collectd.prefix
+* Allow the Grafana dashboard prefix to be set, as per above.
+
 # Version 1.4.2
 
 * BUG: Ensure firewall
