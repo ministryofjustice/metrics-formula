@@ -4,6 +4,7 @@
 
 include:
   - nginx
+  - logstash.client
 
 {{ app_skeleton('grafana') }}
 

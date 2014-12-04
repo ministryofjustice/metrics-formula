@@ -1,4 +1,5 @@
 include:
+  - repos
   - nginx
   - .graphite
   - .collectd
