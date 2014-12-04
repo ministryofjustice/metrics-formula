@@ -269,12 +269,14 @@ return function(callback) {
   })
   .done(function(result) {
 
-    display_nodes = arg_nodes.split(',')
-    if ( display_nodes.length == 0 ) {
+    if ( arg_nodes == '' ) {
       display_nodes = find_filter_values(prefix + ".*")
+    } else {
+      display_nodes = arg_nodes.split(',')
     }
+
     for (var i in display_nodes) {
-      dashboard.rows.push(row_of_node_panels(node_list[i], prefix));
+      dashboard.rows.push(row_of_node_panels(display_nodes[i], prefix));
     }
 
     // when dashboard is composed call the callback
