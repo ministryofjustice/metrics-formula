@@ -1,3 +1,7 @@
+# Version 1.5.1
+
+* Fix to allow collectd.prefix on 14.04 and non-12.04 Ubuntu.
+
 # Version 1.5.0
 
 * Allow collectd graphite prefix to be set via collectd.prefix
