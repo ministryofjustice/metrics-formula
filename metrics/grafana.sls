@@ -44,7 +44,7 @@ grafana.git:
     - source: salt://metrics/files/grafana/instance.js
     - user: root
     - group: root
-    - mode: 755 
+    - mode: 644 
     - require:
       - file: /srv/grafana/application/current
 
@@ -53,7 +53,7 @@ grafana.git:
     - source: salt://metrics/files/grafana/overview.js
     - user: root
     - group: root
-    - mode: 755 
+    - mode: 644 
     - require:
       - file: /srv/grafana/application/current
 
@@ -62,7 +62,7 @@ grafana.git:
     - source: salt://metrics/files/grafana/monitoring_health.js
     - user: root
     - group: root
-    - mode: 755 
+    - mode: 644 
     - require:
       - file: /srv/grafana/application/current
 
