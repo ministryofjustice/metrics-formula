@@ -1,3 +1,4 @@
+{% from 'metrics/map.jinja' import graphite with context %}
 # Last Modified: Wed Jul  9 10:39:12 2014
 #include <tunables/global>
 
@@ -15,5 +16,6 @@
   /sbin/ldconfig.real rix,
   /srv/graphite/** mrw,
   /srv/graphite/virtualenv/bin/python ix,
+  {{graphite.data_dir}}/** mrw,
 
 }

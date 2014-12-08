@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DB_BASE="/srv/graphite/storage/whisper"
+DB_BASE=${1:-"/srv/graphite/storage/whisper"}
 CONF_BASE="/srv/graphite/conf"
 CARBON_CONF="${CONF_BASE}/carbon.conf"
 STORAGE_SCHEMAS_CONF="${CONF_BASE}/storage-schemas.conf"

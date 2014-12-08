@@ -1,3 +1,8 @@
+# CURRENT
+
+* Allow specification of graphite.data_dir (default /srv/graphite/storage)
+* Include grafana scripted dashboards: overview.js, instance.js, monitoring_health.js
+
 # Version 1.5.1
 
 * Fix to allow collectd.prefix on 14.04 and non-12.04 Ubuntu.

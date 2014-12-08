@@ -1,3 +1,4 @@
+{% from 'metrics/map.jinja' import graphite with context %}
 {% from 'utils/apps/lib.sls' import app_skeleton with context %}
 
 include:
@@ -89,7 +90,7 @@ graphite_virtualenv:
       - service: graphite-service
       - service: carbon
 
-/srv/graphite/storage:
+{{ graphite.data_dir }}:
   file:
     - directory
     - user: graphite
@@ -97,7 +98,7 @@ graphite_virtualenv:
     - require:
       - user: graphite
 
-/srv/graphite/storage/log/webapp:
+{{ graphite.data_dir }}/log/webapp:
   file:
     - directory
     - user: graphite
@@ -105,7 +106,7 @@ graphite_virtualenv:
     - makedirs: True
     - require:
       - user: graphite
-      - file: /srv/graphite/storage
+      - file: {{ graphite.data_dir }}
 
 graphite_seed:
   cmd:
@@ -116,7 +117,7 @@ graphite_seed:
     - user: graphite
     - require:
       - user: graphite
-      - file: /srv/graphite/storage/log/webapp
+      - file: {{ graphite.data_dir }}/log/webapp
     - watch:
       - cmd: graphite_virtualenv
       - file: /srv/graphite/conf
@@ -141,6 +142,7 @@ graphite_seed:
 /etc/init/carbon.conf:
   file.managed:
     - source: salt://metrics/files/graphite/carbon.conf
+    - template: jinja
     - user: root
     - group: root
     - mode: 644

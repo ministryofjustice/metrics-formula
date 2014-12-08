@@ -30,6 +30,15 @@ Dependencies
 
    `python <https://github.com/ministryofjustice/python-formula>`_
 
+Grafana
+=======
+
+This formula includes some Grafana scripted dashboards that should work
+well with other tools in this formula:
+
+- overview.js -- overview of all nodes under a graphite 'env' prefix.
+- instance.js -- detailed information about a node
+- monitoring_health.js -- key information about the monitoring server services
 
 apparmor
 ========
