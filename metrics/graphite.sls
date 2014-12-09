@@ -201,6 +201,7 @@ carbon:
       - file: /etc/apparmor.d/nginx_local
 
 {% from 'firewall/lib.sls' import firewall_enable with context %}
-{{ firewall_enable('graphite', 2003, proto='tcp') }}
-{{ firewall_enable('graphite', 2004, proto='tcp') }}
-{{ firewall_enable('graphite', 7002, proto='tcp') }}
+{{ firewall_enable('graphite-tcp', 2003, proto='tcp') }}
+{{ firewall_enable('graphite-udp', 2003, proto='udp') }}
+{{ firewall_enable('graphite-pickle', 2004, proto='tcp') }}
+{{ firewall_enable('graphite-cache', 7002, proto='tcp') }}
