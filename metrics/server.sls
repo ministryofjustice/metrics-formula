@@ -4,3 +4,4 @@ include:
   - .graphite
   - .collectd
   - .grafana
+  - .statsd

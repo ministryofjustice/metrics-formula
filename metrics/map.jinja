@@ -18,6 +18,15 @@
 }, merge=salt['pillar.get']('graphite',{})) %}
 
 
+{% set bucky = salt['grains.filter_by']({
+    'Debian': {
+        'carbon': 'localhost',
+        'port': 8126,
+    },
+    'default': 'Debian',
+}, merge=salt['pillar.get']('bucky',{})) %}
+
+
 {% set collectd = salt['grains.filter_by']({
     'Ubuntu-12.04': {
         'carbon': 'monitoring.local',
