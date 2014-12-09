@@ -1,4 +1,4 @@
-# CURRENT
+# Version 1.6.0
 
 * Allow specification of graphite.data_dir (default /srv/graphite/storage)
 * Include grafana scripted dashboards: overview.js, instance.js, monitoring_health.js
