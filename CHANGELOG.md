@@ -1,3 +1,7 @@
+# CURRENT
+
+* Add ptrace to trusty collectd apparmor profile
+
 # Version 1.8.0
 
 * statsd is now supervised by upstart
