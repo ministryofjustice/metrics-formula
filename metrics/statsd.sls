@@ -15,8 +15,7 @@ include:
 
 
 /srv/statsd/virtualenv:
-  virtualenv:
-    - managed
+  virtualenv.managed:
     - venv_bin: /usr/local/bin/virtualenv
     - system_site_packages: False
     - requirements: salt://metrics/files/statsd/requirements.txt
@@ -25,21 +24,22 @@ include:
 
 
 /srv/statsd/conf:
-  file:
-    - directory
+  file.directory:
     - user: statsd
     - group: statsd
-  require:
-    - user: statsd
+    - require:
+      - user: statsd
 
 
 /srv/statsd/conf/bucky.conf:
-  file:
-    - managed
+  file.managed:
     - template: jinja
     - source: salt://metrics/templates/statsd/bucky.conf
+    - user: statsd
+    - group: statsd
     - require:
       - file: /srv/statsd/conf
+      - user: statsd
     - watch_in:
       - service: supervisord
 
