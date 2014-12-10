@@ -1,6 +1,7 @@
 # Version 1.6.?
 
 * Prevent collectd from buffering metrics when graphite is not accessible
+* Install bucky on monitoring server and bind it to port 8126
 
 # Version 1.6.0
 

@@ -38,3 +38,5 @@ nosetests.xml
 .kitchen.local.yml
 .bundle
 vendor
+*~
+

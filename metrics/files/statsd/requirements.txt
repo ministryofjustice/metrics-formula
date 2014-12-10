@@ -1,2 +1,3 @@
-bucky
+bucky==2.2.2
 gunicorn
+setproctitle

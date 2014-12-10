@@ -7,7 +7,21 @@ Usage
 
 You shouldn't use this formula directly unless you know what you are doing.  If you want to set up monitoring on your servers you should look at the monitoring formula.
 
-Install and configure graphite, collectd and statsd (via bucky) and grafana
+Install and configure graphite, collectd, bucky and grafana.
+
+There are two statsd interfaces provided.
+
+Firstly, on each host we install collectd with statsd intefrace exposed (default port 8125).
+Keys for metrics reported there will be prefixed with "metric.hostname.type".
+So use it only to store host specific metrics.
+
+Secondly, in case you need host independent, aggregated metrics
+i.e. you want to report data from application scaled horizontally behind loadbalancer,
+than use a central metrics endpoint. It's by default located on host: `monitoring.local` and port 8126.
+This functionality is provided by bucky.
+
+
+Collectd exposes
 
 .. note::
 
