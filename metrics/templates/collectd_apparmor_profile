@@ -37,5 +37,9 @@
   /proc/vmstat r,
   /run/utmp rk,
   /usr/lib{,32,64}/** mr,
+{% if salt['grains.get']('osfinger') == 'Ubuntu-14.04' %}
+
+  ptrace (trace),
+{% endif %}
 
 }
