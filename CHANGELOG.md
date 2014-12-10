@@ -1,3 +1,7 @@
+# Version 1.6.?
+
+* Prevent collectd from buffering metrics when graphite is not accessible
+
 # Version 1.6.0
 
 * Allow specification of graphite.data_dir (default /srv/graphite/storage)
