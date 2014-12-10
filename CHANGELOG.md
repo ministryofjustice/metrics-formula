@@ -1,3 +1,7 @@
+# Version 1.7.1
+
+* Hotfix - to solve statsd.sls order
+
 # Version 1.7.0
 
 * Prevent collectd from buffering metrics when graphite is not accessible
