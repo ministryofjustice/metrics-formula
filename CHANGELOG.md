@@ -1,3 +1,7 @@
+# Version 1.7.2
+
+* Add ptrace to trusty collectd apparmor profile
+
 # Version 1.7.1
 
 * Hotfix - to solve statsd.sls order
