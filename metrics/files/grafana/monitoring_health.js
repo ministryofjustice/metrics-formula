@@ -27,6 +27,7 @@ var arg_nodes = '';
 
 var arg_title = "Health";
 var arg_refresh = "1m";
+var arg_es_node = "monitoring_01";
 
 if(!_.isUndefined(ARGS.env)) {
   arg_env = ARGS.env;
@@ -38,6 +39,10 @@ if(!_.isUndefined(ARGS.from)) {
 
 if(!_.isUndefined(ARGS.title)) {
   arg_title = ARGS.title;
+}
+
+if(!_.isUndefined(ARGS.es_node)) {
+  arg_es_node = ARGS.es_node;
 }
 
 if(!_.isUndefined(ARGS.refresh)) {
@@ -142,9 +147,9 @@ function panel_elasticsearch_gc(title){
       query_as_alias: true
     },
     targets: [
-      { "target": 'alias(nonNegativeDerivative(services.elasticsearch.monitoring_01.jvm.gc.collectors.young.collection_time_in_millis),"Young GC Collect Time")' },
-      { "target": 'alias(nonNegativeDerivative(services.elasticsearch.monitoring_01.jvm.gc.collectors.old.collection_time_in_millis),"Old GC Collect Time")' },
-      { "target": 'alias(services.elasticsearch.monitoring_01.jvm.mem.heap_used_percent,"Heap Used %")' },
+      { "target": 'alias(nonNegativeDerivative(services.elasticsearch.' + arg_es_node + '.jvm.gc.collectors.young.collection_time_in_millis),"Young GC Collect Time")' },
+      { "target": 'alias(nonNegativeDerivative(services.elasticsearch.' + arg_es_node + '.jvm.gc.collectors.old.collection_time_in_millis),"Old GC Collect Time")' },
+      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.jvm.mem.heap_used_percent,"Heap Used %")' },
     ],
     aliasColors: {
       "Young GC Collect Time": "blue",
@@ -177,14 +182,14 @@ function panel_elasticsearch_memory(title){
       query_as_alias: true
     },
     targets: [
-      { "target": 'alias(services.elasticsearch.monitoring_01.indices.segments.memory_in_bytes, "segments")' },
-      { "target": 'alias(services.elasticsearch.monitoring_01.indices.percolate.memory_size_in_bytes, "percolate")' },
-      { "target": 'alias(services.elasticsearch.monitoring_01.indices.id_cache.memory_size_in_bytes, "id_cache")' },
-      { "target": 'alias(services.elasticsearch.monitoring_01.indices.filter_cache.memory_size_in_bytes, "filter_cache")' },
-      { "target": 'alias(services.elasticsearch.monitoring_01.indices.fielddata.memory_size_in_bytes, "fielddata")' },
-      { "target": 'alias(services.elasticsearch.monitoring_01.jvm.mem.heap_used_in_bytes, "heap_used")' },
-      { "target": 'alias(services.elasticsearch.monitoring_01.jvm.mem.heap_max_in_bytes, "heap_max")' },
-      { "target": 'alias(services.elasticsearch.monitoring_01.jvm.mem.heap_committed_in_bytes, "heap_committed")' },
+      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.indices.segments.memory_in_bytes, "segments")' },
+      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.indices.percolate.memory_size_in_bytes, "percolate")' },
+      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.indices.id_cache.memory_size_in_bytes, "id_cache")' },
+      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.indices.filter_cache.memory_size_in_bytes, "filter_cache")' },
+      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.indices.fielddata.memory_size_in_bytes, "fielddata")' },
+      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.jvm.mem.heap_used_in_bytes, "heap_used")' },
+      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.jvm.mem.heap_max_in_bytes, "heap_max")' },
+      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.jvm.mem.heap_committed_in_bytes, "heap_committed")' },
     ],
     aliasColors: {
       "segments": "blue",
