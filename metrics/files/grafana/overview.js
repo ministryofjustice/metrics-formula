@@ -26,9 +26,12 @@ var arg_env  = 'metrics';
 var arg_span = 2;
 var arg_from = '2h';
 var arg_nodes = '';
+var arg_node_domain_selector = '*.*';
 
 var arg_title = "Overview";
 var arg_refresh = "1m";
+
+var arg_statsd_base = "bucky.counters.logstash";
 
 if(!_.isUndefined(ARGS.env)) {
   arg_env = ARGS.env;
@@ -48,6 +51,14 @@ if(!_.isUndefined(ARGS.refresh)) {
 
 if(!_.isUndefined(ARGS.nodes)) {
   arg_nodes = ARGS.nodes;
+}
+
+if(!_.isUndefined(ARGS.statsd_base)) {
+  arg_statsd_base = ARGS.statsd_base;
+}
+
+if(!_.isUndefined(ARGS.node_domain_selector)) {
+  arg_node_domain_selector = ARGS.node_domain_selector;
 }
 
 // execute graphite-api /metrics/find query
@@ -176,12 +187,13 @@ function panel_collectd_memory(title, prefix, node) {
   }
 };
 
-function panel_collectd_logstash_event_types(title, prefix, node) {
-  var idx = len(prefix);
+function panel_collectd_logstash_event_types(title, node) {
+  var event_target = arg_statsd_base + ".per-host." + node + "." + arg_node_domain_selector + ".events.type.*.count"
+  var event_idx = len(event_target) - 1;
   return {
     title: title,
     type: 'graphite',
-    span: 3,
+    span: 2,
     y_formats: ["none"],
     grid: {max: null, min: 0},
     lines: true,
@@ -191,7 +203,7 @@ function panel_collectd_logstash_event_types(title, prefix, node) {
     stack: true,
     nullPointMode: "null",
     targets: [
-      { "target": "aliasByNode(movingMedian(" + prefix + ".monitoring-01.statsd.derive.logstash.per-host." + node + ".*.events.type.*,'1min')," +(idx+10)+ ")" },
+      { "target": "aliasByNode(movingMedian("+event_target+",'1min')," + event_idx + ")" },
     ],
     aliasColors: {
       "nginx": "#629E51",
@@ -212,7 +224,7 @@ function row_of_node_panels(node,prefix) {
       panel_collectd_delta_cpu("CPU",prefix,node),
       panel_collectd_loadavg("Load",prefix,node),
       panel_collectd_memory("Memory",prefix,node),
-      panel_collectd_logstash_event_types("Events",prefix,node)
+      panel_collectd_logstash_event_types("Events",node)
     ]
   }
 }
