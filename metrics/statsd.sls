@@ -43,12 +43,12 @@ include:
     - watch_in:
       - service: supervisord
 
-
-{{ supervise('statsd',
-             cmd="/srv/statsd/virtualenv/bin/bucky",
-             args="/srv/statsd/conf/bucky.conf",
-             numprocs=1,
-             supervise=True) }}
+/etc/init/statsd.conf:
+  file.managed:
+    - source: salt://metrics/templates/statsd/upstart-statsd.conf
+    - template: jinja
+    - require:
+        - file: /srv/statsd/conf/bucky.conf
 
 {% from 'firewall/lib.sls' import firewall_enable with  context %}
 {{ firewall_enable('statsd-bucky', bucky.port, proto='udp') }}
