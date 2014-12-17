@@ -1,3 +1,9 @@
+# Version 1.8.0
+
+* statsd is now supervised by upstart
+* kitchen-salt now points to its official repo
+* added tests for statsd bucky
+
 # Version 1.7.1
 
 * Hotfix - to solve statsd.sls order
