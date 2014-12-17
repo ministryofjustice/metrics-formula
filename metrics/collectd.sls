@@ -72,4 +72,4 @@ collectd-confd-dir:
       - service: collectd
 
 {% from 'firewall/lib.sls' import firewall_enable with context %}
-{{ firewall_enable('statsd', 8125, proto='udp') }}
+{{ firewall_enable('statsd-firewall', 8125, proto='udp') }}

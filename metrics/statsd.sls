@@ -5,7 +5,6 @@
 include:
   - .deps
   - python
-  - supervisor
   - nginx
   - .collectd
   - firewall
@@ -30,7 +29,6 @@ include:
     - require:
       - user: statsd
 
-
 /srv/statsd/conf/bucky.conf:
   file.managed:
     - template: jinja
@@ -41,7 +39,11 @@ include:
       - file: /srv/statsd/conf
       - user: statsd
     - watch_in:
-      - service: supervisord
+      - service: statsd
+
+remove_old_supervisor_conf:
+  file.absent:
+    - name: /etc/supervisor.d/statsd.conf
 
 /etc/init/statsd.conf:
   file.managed:
@@ -49,6 +51,15 @@ include:
     - template: jinja
     - require:
         - file: /srv/statsd/conf/bucky.conf
+    - watch_in:
+        - service: statsd
+
+statsd-service:
+  service.running:
+    - name: statsd
+    - enable: True
+    - require:
+      - user: statsd
 
 {% from 'firewall/lib.sls' import firewall_enable with  context %}
 {{ firewall_enable('statsd-bucky', bucky.port, proto='udp') }}
