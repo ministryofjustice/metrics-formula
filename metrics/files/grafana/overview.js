@@ -163,6 +163,37 @@ function panel_collectd_loadavg(title, prefix, node) {
   }
 };
 
+function panel_collectd_ntp(title, prefix, node) {
+  return {
+    title: title,
+    type: 'graphite',
+    span: 2,
+    'y-axis': false,
+    y_formats: ["bytes"],
+    grid: {max: null, min: 0},
+    lines: true,
+    legend: {show: true},
+    fill: 2,
+    linewidth: 1,
+    stack: false,
+    nullPointMode: "null",
+    targets: [
+      { "target": "alias(scale(maxSeries(" + prefix + "." + node + ".ntpd.time_offset.*.*.*.*),1000),'offset')" },
+      { "target": "alias(" + prefix + "." + node + ".ntpd.time_offset.loop,'time-loop')" }
+      //{ "target": "alias(" + prefix + "." + node + ".ntpd.frequency_offset.loop,'freq-loop')" }
+    ],
+    aliasColors: {
+      "offset": "red",
+      "time-loop": "green",
+      "freq-loop": "blue"
+    },
+    aliasYAxis: {
+      "time-loop": 2,
+      //"freq-loop": 2,
+    }
+  }
+};
+
 function panel_collectd_memory(title, prefix, node) {
   var idx = len(prefix);
   return {
@@ -226,6 +257,7 @@ function row_of_node_panels(node,prefix) {
       panel_collectd_delta_cpu("CPU",prefix,node),
       panel_collectd_loadavg("Load",prefix,node),
       panel_collectd_memory("Memory",prefix,node),
+      panel_collectd_ntp("Time",prefix,node),
       panel_collectd_logstash_event_types("Events",node)
     ]
   }
