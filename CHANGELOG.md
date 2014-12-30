@@ -1,8 +1,8 @@
 # CURRENT
 
-* Add NTP graph to overview.js
-* Switch to using Bucky statsd metrics for events
-* Add ptrace to trusty collectd apparmor profile
+* Add NTP graph to Grafana overview.js scripted dashboard
+* Switch to using Bucky statsd metrics for events in overview.js dashboard
+* Add ptrace to trusty kernel collectd apparmor profile
 
 # Version 1.8.0
 
