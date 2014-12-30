@@ -180,7 +180,6 @@ function panel_collectd_ntp(title, prefix, node) {
     targets: [
       { "target": "alias(scale(maxSeries(" + prefix + "." + node + ".ntpd.time_offset.*.*.*.*),1000),'offset')" },
       { "target": "alias(" + prefix + "." + node + ".ntpd.time_offset.loop,'time-loop')" }
-      //{ "target": "alias(" + prefix + "." + node + ".ntpd.frequency_offset.loop,'freq-loop')" }
     ],
     aliasColors: {
       "offset": "red",
@@ -189,7 +188,6 @@ function panel_collectd_ntp(title, prefix, node) {
     },
     aliasYAxis: {
       "time-loop": 2,
-      //"freq-loop": 2,
     }
   }
 };
