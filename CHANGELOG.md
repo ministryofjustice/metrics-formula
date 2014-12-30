@@ -1,5 +1,7 @@
-# Version 1.7.2
+# Version 1.8.x
 
+* Add NTP graph to overview.js
+* Switch to using Bucky statsd metrics for events
 * Add ptrace to trusty collectd apparmor profile
 
 # Version 1.7.1
