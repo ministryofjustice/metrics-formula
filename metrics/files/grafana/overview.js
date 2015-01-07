@@ -169,25 +169,23 @@ function panel_collectd_ntp(title, prefix, node) {
     type: 'graphite',
     span: 2,
     'y-axis': true,
-    y_formats: ["bytes"],
-    grid: {max: null, min: 0},
+    y_formats: ["ms"],
+    grid: {max: 100, min: -100},
     lines: true,
     legend: {show: true},
-    fill: 2,
+    fill: 0,
     linewidth: 1,
     stack: false,
     nullPointMode: "null",
     targets: [
-      { "target": "alias(scale(maxSeries(" + prefix + "." + node + ".ntpd.time_offset.*.*.*.*),1000),'offset')" },
-      { "target": "alias(" + prefix + "." + node + ".ntpd.time_offset.loop,'time-loop')" }
+      { "target": "scale(aliasSub(mostDeviant(4," + prefix + "." + node + "ntpd.time_offset.*.*.*.*),'.*\.(\d+)\.(\d+)\.(\d+)\.(\d+)$','\1.\2.\3.\4'),1000)" },
+      { "target": "alias(" + prefix + "." + node + ".ntpd.time_offset.loop, 'loop')" }
     ],
     aliasColors: {
-      "offset": "red",
-      "time-loop": "green",
-      "freq-loop": "blue"
+      "loop": "red",
     },
     aliasYAxis: {
-      "time-loop": 2,
+      "loop": 2,
     }
   }
 };
