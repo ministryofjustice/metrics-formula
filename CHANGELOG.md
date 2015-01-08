@@ -1,4 +1,4 @@
-# CURRENT
+# Version 1.9.0
 
 * Add NTP graph to Grafana overview.js scripted dashboard
 * Switch to using Bucky statsd metrics for events in overview.js dashboard
