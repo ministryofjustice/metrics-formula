@@ -48,4 +48,25 @@ describe "grafana setup" do
     its(:content) { should match /root \/srv\/grafana\/application\/current\/src;/ }
   end
 
+  describe file("/srv/grafana/application/current/src/app/dashboards/overview.js") do
+    it { should be_file}
+    it { should be_owned_by "root" }
+    it { should be_grouped_into "root" }
+    it { should be_mode 644 }
+  end
+
+  describe file("/srv/grafana/application/current/src/app/dashboards/monitoring_health.js") do
+    it { should be_file}
+    it { should be_owned_by "root" }
+    it { should be_grouped_into "root" }
+    it { should be_mode 644 }
+  end
+
+  describe file("/srv/grafana/application/current/src/app/dashboards/instance.js") do
+    it { should be_file}
+    it { should be_owned_by "root" }
+    it { should be_grouped_into "root" }
+    it { should be_mode 644 }
+  end
+
 end
