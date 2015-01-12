@@ -25,12 +25,19 @@ var arg_span = 2;
 var arg_from = '2h';
 var arg_nodes = '';
 
-var arg_title = "Health";
+var arg_title = "Monitoring Health";
 var arg_refresh = "1m";
+
+var arg_es_env  = 'services';
+var arg_es_cluster = "elasticsearch";
 var arg_es_node = "monitoring_01";
 
 if(!_.isUndefined(ARGS.env)) {
   arg_env = ARGS.env;
+}
+
+if(!_.isUndefined(ARGS.es_env)) {
+  arg_es_env = ARGS.es_env;
 }
 
 if(!_.isUndefined(ARGS.from)) {
@@ -43,6 +50,10 @@ if(!_.isUndefined(ARGS.title)) {
 
 if(!_.isUndefined(ARGS.es_node)) {
   arg_es_node = ARGS.es_node;
+}
+
+if(!_.isUndefined(ARGS.es_cluster)) {
+  arg_es_cluster = ARGS.es_cluster;
 }
 
 if(!_.isUndefined(ARGS.refresh)) {
@@ -132,8 +143,7 @@ function panel_elasticsearch_gc(title){
     type: 'graphite',
     span: 4,
     renderer: "flot",
-    y_formats: ["none"],
-    y2_format: "none",
+    y_formats: ["ms", "bytes"],
     grid: {max: null, min: 0},
     lines: true,
     fill: 2,
@@ -147,9 +157,9 @@ function panel_elasticsearch_gc(title){
       query_as_alias: true
     },
     targets: [
-      { "target": 'alias(nonNegativeDerivative(services.elasticsearch.' + arg_es_node + '.jvm.gc.collectors.young.collection_time_in_millis),"Young GC Collect Time")' },
-      { "target": 'alias(nonNegativeDerivative(services.elasticsearch.' + arg_es_node + '.jvm.gc.collectors.old.collection_time_in_millis),"Old GC Collect Time")' },
-      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.jvm.mem.heap_used_percent,"Heap Used %")' },
+      { "target": 'alias(nonNegativeDerivative(' + arg_es_env + '.' + arg_es_cluster + '.' + arg_es_node + '.jvm.gc.collectors.young.collection_time_in_millis),"Young GC Collect Time")' },
+      { "target": 'alias(nonNegativeDerivative(' + arg_es_env + '.' + arg_es_cluster + '.' + arg_es_node + '.jvm.gc.collectors.old.collection_time_in_millis),"Old GC Collect Time")' },
+      { "target": 'alias(' + arg_es_env + '.' + arg_es_cluster + '.' + arg_es_node + '.jvm.mem.heap_used_percent,"Heap Used %")' },
     ],
     aliasColors: {
       "Young GC Collect Time": "blue",
@@ -168,11 +178,11 @@ function panel_elasticsearch_memory(title){
     type: 'graphite',
     span: 4,
     renderer: "flot",
-    y_formats: ["none", "none"],
+    y_formats: ["bytes", "bytes"],
     grid: {max: null, min: 0},
     lines: true,
-    fill: 2,
-    linewidth: 1,
+    fill: 1,
+    linewidth: 2,
     stack: false,
     legend: {show: true},
     percentage: false,
@@ -182,27 +192,56 @@ function panel_elasticsearch_memory(title){
       query_as_alias: true
     },
     targets: [
-      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.indices.segments.memory_in_bytes, "segments")' },
-      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.indices.percolate.memory_size_in_bytes, "percolate")' },
-      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.indices.id_cache.memory_size_in_bytes, "id_cache")' },
-      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.indices.filter_cache.memory_size_in_bytes, "filter_cache")' },
-      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.indices.fielddata.memory_size_in_bytes, "fielddata")' },
-      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.jvm.mem.heap_used_in_bytes, "heap_used")' },
-      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.jvm.mem.heap_max_in_bytes, "heap_max")' },
-      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.jvm.mem.heap_committed_in_bytes, "heap_committed")' },
+      { "target": 'alias(' + arg_es_env + '.' + arg_es_cluster + '.' + arg_es_node + '.indices.percolate.memory_size_in_bytes, "percolate")' },
+      { "target": 'alias(' + arg_es_env + '.' + arg_es_cluster + '.' + arg_es_node + '.indices.id_cache.memory_size_in_bytes, "id_cache")' },
+      { "target": 'alias(' + arg_es_env + '.' + arg_es_cluster + '.' + arg_es_node + '.indices.filter_cache.memory_size_in_bytes, "filter_cache")' },
+      { "target": 'alias(' + arg_es_env + '.' + arg_es_cluster + '.' + arg_es_node + '.indices.fielddata.memory_size_in_bytes, "fielddata")' },
+      { "target": 'alias(' + arg_es_env + '.' + arg_es_cluster + '.' + arg_es_node + '.jvm.mem.heap_used_in_bytes, "heap_used")' },
     ],
     aliasColors: {
-      "segments": "blue",
-      "percolate": "green",
+      "heap_used": "blue",
+      "fielddata": "green",
+      "percolate": "red",
       "id_cache": "yellow",
       "filter_cache": "purple",
-      "fielddata": "brown",
     },
     aliasYAxis: {
-      "percolate": 2,
-      "id_cache": 2,
-      "filter_cache": 2,
-      "fielddata": 2,
+      "heap_used": 2,
+    }
+  }
+};
+
+function panel_elasticsearch_segments(title){
+  return {
+    title: title,
+    type: 'graphite',
+    span: 4,
+    renderer: "flot",
+    y_formats: ["bytes", null],
+    grid: {max: null, min: 0},
+    lines: true,
+    fill: 1,
+    linewidth: 2,
+    stack: false,
+    legend: {show: true},
+    percentage: false,
+    nullPointMode: "null",
+    tooltip: {
+      value_type: "individual",
+      query_as_alias: true
+    },
+    targets: [
+      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.indices.segments.memory_in_bytes, "segments_memory")' },
+      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.indices.segments.count, "segments_count")' },
+      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.jvm.mem.heap_used_in_bytes, "heap_used")' },
+    ],
+    aliasColors: {
+      "heap_used": "blue",
+      "segments_memory": "green",
+      "segments_count": "red",
+    },
+    aliasYAxis: {
+      "segments_count": 2,
     }
   }
 };
@@ -229,6 +268,17 @@ function row_elasticsearch_health(title,prefix) {
     panels: [
       panel_elasticsearch_gc('ES GC'),
       panel_elasticsearch_memory('ES Memory'),
+    ]
+  }
+};
+
+function row_elasticsearch_scale(title,prefix) {
+  return {
+    title: title,
+    height: '250px',
+    collapse: false,
+    panels: [
+      panel_elasticsearch_segments('ES Segments'),
     ]
   }
 };
@@ -287,7 +337,8 @@ return function(callback) {
 
     dashboard.rows.push(
       row_graphite_health('Graphite Health',prefix),
-      row_elasticsearch_health('ES Health',prefix)
+      row_elasticsearch_health('ES Health',prefix),
+      row_elasticsearch_scale('ES Scale',prefix)
     );
 
     // when dashboard is composed call the callback
