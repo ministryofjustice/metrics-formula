@@ -20,10 +20,11 @@
 var window, document, ARGS, $, jQuery, moment, kbn;
 
 // use defaults for URL arguments
-var arg_env  = '';
+var arg_env  = 'metrics';
+var arg_i    = 'monitoring-01';
+
 var arg_span = 2;
 var arg_from = '2h';
-var arg_nodes = '';
 
 var arg_title = "Monitoring Health";
 var arg_refresh = "1m";
@@ -34,6 +35,10 @@ var arg_es_node = "monitoring_01";
 
 if(!_.isUndefined(ARGS.env)) {
   arg_env = ARGS.env;
+}
+
+if(!_.isUndefined(ARGS.i)) {
+  arg_i = ARGS.i;
 }
 
 if(!_.isUndefined(ARGS.es_env)) {
@@ -86,12 +91,12 @@ function len(prefix){
 
 function panel_node_links_markdown(node) {
   return {
-    title: node,
+    title: 'Links',
     type: 'text',
     mode: 'markdown',
-    span: 2,
+    span: 4,
     error: false,
-    content: "[base graphs](/#/dashboard/script/instance.js?env=" + arg_env + "&i=" + node + ")",
+    content: "[" + node + " base graphs](/#/dashboard/script/instance.js?env=" + arg_env + "&i=" + node + ")",
     style: {}
   }
 };
@@ -255,6 +260,7 @@ function row_graphite_health(title,prefix) {
     height: '250px',
     collapse: false,
     panels: [
+      panel_node_links_markdown(arg_i),
       panel_carbon_cache('Carbon Cache'),
     ]
   }
