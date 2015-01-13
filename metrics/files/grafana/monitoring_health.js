@@ -184,7 +184,7 @@ function panel_elasticsearch_gc(title){
     type: 'graphite',
     span: 4,
     renderer: "flot",
-    y_formats: ["ms", "bytes"],
+    y_formats: ["ms", null],
     grid: {max: null, min: 0},
     lines: true,
     fill: 2,
@@ -287,6 +287,38 @@ function panel_elasticsearch_segments(title){
   }
 };
 
+function panel_elasticsearch_size(title){
+  return {
+    title: title,
+    type: 'graphite',
+    span: 4,
+    renderer: "flot",
+    y_formats: ["short", "bytes"],
+    grid: {max: null, min: 0},
+    lines: true,
+    fill: 1,
+    linewidth: 2,
+    stack: false,
+    legend: {show: true},
+    percentage: false,
+    nullPointMode: "null",
+    tooltip: {
+      value_type: "individual",
+      query_as_alias: true
+    },
+    targets: [
+      { "target": 'alias(' + arg_es_env + '.' + arg_es_cluster + '.' + arg_es_node + '.indices.docs.count, "doc_count")' },
+      { "target": 'alias(' + arg_es_env + '.' + arg_es_cluster + '.' + arg_es_node + '.indices.store.size_in_bytes, "store_size")' },
+    ],
+    aliasColors: {
+      "doc_count": "blue",
+      "store_size": "green",
+    },
+    aliasYAxis: {
+      "store_size": 2,
+    }
+  }
+};
 
 //---------------------------------------------------------------------------------------
 
@@ -321,6 +353,7 @@ function row_elasticsearch_scale(title,prefix) {
     collapse: false,
     panels: [
       panel_elasticsearch_segments('ES Segments'),
+      panel_elasticsearch_size('ES Size'),
     ]
   }
 };
