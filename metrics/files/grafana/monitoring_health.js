@@ -272,9 +272,9 @@ function panel_elasticsearch_segments(title){
       query_as_alias: true
     },
     targets: [
-      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.indices.segments.memory_in_bytes, "segments_memory")' },
-      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.indices.segments.count, "segments_count")' },
-      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.jvm.mem.heap_used_in_bytes, "heap_used")' },
+      { "target": 'alias(' + arg_es_env + '.' + arg_es_cluster + '.' + arg_es_node + '.indices.segments.memory_in_bytes, "segments_memory")' },
+      { "target": 'alias(' + arg_es_env + '.' + arg_es_cluster + '.' + arg_es_node + '.indices.segments.count, "segments_count")' },
+      { "target": 'alias(' + arg_es_env + '.' + arg_es_cluster + '.' + arg_es_node + '.jvm.mem.heap_used_in_bytes, "heap_used")' },
     ],
     aliasColors: {
       "heap_used": "blue",
