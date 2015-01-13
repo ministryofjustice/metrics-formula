@@ -28,10 +28,15 @@ var arg_from = '2h';
 
 var arg_title = "Monitoring Health";
 var arg_refresh = "1m";
+var arg_no_help = false;
 
 var arg_es_env  = 'services';
 var arg_es_cluster = "elasticsearch";
 var arg_es_node = "monitoring_01";
+
+if(!_.isUndefined(ARGS.no_help)) {
+  arg_no_help = ARGS.no_help;
+}
 
 if(!_.isUndefined(ARGS.env)) {
   arg_env = ARGS.env;
@@ -101,6 +106,37 @@ function panel_node_links_markdown(node) {
   }
 };
 
+function panel_help_text() {
+  var help_md = "### How to use this dashboard\n" +
+                "\n" +
+                "This dashboard expects:\n" +
+                "\n" +
+                "* es2graphite.py reporting to `{es_env}.{es_cluster}.{es_node}` - defaulting to `services.elasticsearch.monitoring_01`\n" +
+                "* carbon cache reporting to `carbon.*`\n" +
+                "* collectd reporting to `{env}.{node}` - defaulting to `metrics.monitoring-01`\n" +
+                "\n" +
+                "Arguments:\n" +
+                "\n" +
+                "* `no_help` -- omit this panel\n" +
+                "* `es_node={elasticsearch_node}` override default es_node 'monitoring_01'\n" +
+                "* `es_cluster={elasticsearch_cluster}` override default es_cluster 'elasticsearch'\n" +
+                "* `es_env={metric_path}` override default es2graphite base namespace\n" +
+                "* `env={metric_path}` override default collectd base namespace\n" +
+                "* `i={node_name}` override default collectd instance name (default 'monitoring-01')\n" +
+                "* `refresh={interval}` override default refresh interval of `1min`\n" +
+                ""
+
+  return {
+    title: 'Help',
+    type: 'text',
+    mode: 'markdown',
+    span: 8,
+    error: false,
+    content: help_md,
+    style: {}
+  }
+};
+
 // Inspired by http://obfuscurity.com/2012/06/Watching-the-Carbon-Feed
 function panel_carbon_cache(title){
   return {
@@ -148,7 +184,7 @@ function panel_elasticsearch_gc(title){
     type: 'graphite',
     span: 4,
     renderer: "flot",
-    y_formats: ["ms", "bytes"],
+    y_formats: ["ms", null],
     grid: {max: null, min: 0},
     lines: true,
     fill: 2,
@@ -236,9 +272,9 @@ function panel_elasticsearch_segments(title){
       query_as_alias: true
     },
     targets: [
-      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.indices.segments.memory_in_bytes, "segments_memory")' },
-      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.indices.segments.count, "segments_count")' },
-      { "target": 'alias(services.elasticsearch.' + arg_es_node + '.jvm.mem.heap_used_in_bytes, "heap_used")' },
+      { "target": 'alias(' + arg_es_env + '.' + arg_es_cluster + '.' + arg_es_node + '.indices.segments.memory_in_bytes, "segments_memory")' },
+      { "target": 'alias(' + arg_es_env + '.' + arg_es_cluster + '.' + arg_es_node + '.indices.segments.count, "segments_count")' },
+      { "target": 'alias(' + arg_es_env + '.' + arg_es_cluster + '.' + arg_es_node + '.jvm.mem.heap_used_in_bytes, "heap_used")' },
     ],
     aliasColors: {
       "heap_used": "blue",
@@ -251,6 +287,38 @@ function panel_elasticsearch_segments(title){
   }
 };
 
+function panel_elasticsearch_size(title){
+  return {
+    title: title,
+    type: 'graphite',
+    span: 4,
+    renderer: "flot",
+    y_formats: ["short", "bytes"],
+    grid: {max: null, min: 0},
+    lines: true,
+    fill: 1,
+    linewidth: 2,
+    stack: false,
+    legend: {show: true},
+    percentage: false,
+    nullPointMode: "null",
+    tooltip: {
+      value_type: "individual",
+      query_as_alias: true
+    },
+    targets: [
+      { "target": 'alias(' + arg_es_env + '.' + arg_es_cluster + '.' + arg_es_node + '.indices.docs.count, "doc_count")' },
+      { "target": 'alias(' + arg_es_env + '.' + arg_es_cluster + '.' + arg_es_node + '.indices.store.size_in_bytes, "store_size")' },
+    ],
+    aliasColors: {
+      "doc_count": "blue",
+      "store_size": "green",
+    },
+    aliasYAxis: {
+      "store_size": 2,
+    }
+  }
+};
 
 //---------------------------------------------------------------------------------------
 
@@ -285,6 +353,18 @@ function row_elasticsearch_scale(title,prefix) {
     collapse: false,
     panels: [
       panel_elasticsearch_segments('ES Segments'),
+      panel_elasticsearch_size('ES Size'),
+    ]
+  }
+};
+
+function row_help_text() {
+  return {
+    title: "Help",
+    height: '250px',
+    collapse: false,
+    panels: [
+      panel_help_text(),
     ]
   }
 };
@@ -340,6 +420,10 @@ return function(callback) {
     url: '/'
   })
   .done(function(result) {
+
+    if ( ! arg_no_help ) {
+      dashboard.rows.push(row_help_text())
+    }
 
     dashboard.rows.push(
       row_graphite_health('Graphite Health',prefix),
