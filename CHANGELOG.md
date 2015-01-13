@@ -1,3 +1,7 @@
+# Version 1.10.0
+
+* Add 'Segments' and 'Size' graphs to the monitoring_health.js dashboard
+
 # Version 1.9.0
 
 * Add NTP graph to Grafana overview.js scripted dashboard
