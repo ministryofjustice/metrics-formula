@@ -1,6 +1,6 @@
 Upgrading between versions
 
-To CURRENT
+To v1.6.0
 ----------
 
 If you change the graphite.data_dir, you must sync over your old data first:
