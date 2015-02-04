@@ -1,4 +1,4 @@
-# Version CURRENT
+# Version 1.10.1
 
 * help text on overview.js grafana dashboard
 * omit graphs feature for overview.js grafana dashboard
