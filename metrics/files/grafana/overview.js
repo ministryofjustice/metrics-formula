@@ -30,8 +30,13 @@ var arg_node_domain_selector = '*.*';
 
 var arg_title = "Overview";
 var arg_refresh = "1m";
+var arg_no_help = false;
 
 var arg_statsd_base = "bucky.counters.logstash";
+
+if(!_.isUndefined(ARGS.no_help)) {
+  arg_no_help = ARGS.no_help;
+}
 
 if(!_.isUndefined(ARGS.env)) {
   arg_env = ARGS.env;
@@ -96,6 +101,38 @@ function panel_node_links_markdown(node) {
     style: {}
   }
 };
+
+function panel_help_text() {
+  var help_md = "### How to use this dashboard\n" +
+                "\n" +
+                "This dashboard expects:\n" +
+                "\n" +
+                "* collectd reporting to `{env}.{node}` - defaulting to `metrics.monitoring-01`\n" +
+                "* logstash reporting to statsd (for the events graph)\n" +
+                "\n" +
+                "Arguments:\n" +
+                "\n" +
+                "* `no_help` -- omit this panel\n" +
+                "* `env={metric_path}` set to the metric prefix of the graphite names for " +
+                "collectd graphs, eg 'metrics.pvb.prod'\n" +
+                "* `statsd_base={path}` override default statsd path for logstash events. " +
+                "Default is 'bucky.counters.logstash'\n" +
+                "* `node_domain_selector={selector} -- find event type graphs under " +
+                "{statsd_base}.per-host.{node_name}.{selector}.events.type. Default '*.*'"
+                "* `refresh={interval}` override default refresh interval of `1min`\n" +
+                ""
+
+  return {
+    title: 'Help',
+    type: 'text',
+    mode: 'markdown',
+    span: 8,
+    error: false,
+    content: help_md,
+    style: {}
+  }
+};
+
 
 function panel_collectd_delta_cpu(title,prefix,node){
   return {
@@ -245,6 +282,17 @@ function panel_collectd_logstash_event_types(title, node) {
   }
 };
 
+function row_help_text() {
+  return {
+    title: "Help",
+    height: '250px',
+    collapse: false,
+    panels: [
+      panel_help_text(),
+    ]
+  }
+};
+
 function row_of_node_panels(node,prefix) {
   return {
     title: node,
@@ -312,6 +360,10 @@ return function(callback) {
     url: '/'
   })
   .done(function(result) {
+
+    if ( ! arg_no_help ) {
+      dashboard.rows.push(row_help_text())
+    }
 
     if ( arg_nodes == '' ) {
       display_nodes = find_filter_values(prefix + ".*")
