@@ -122,8 +122,8 @@ function panel_help_text() {
                 "collectd graphs, eg 'metrics.pvb.prod'\n" +
                 "* `statsd_base={path}` override default statsd path for logstash events. " +
                 "Default is 'bucky.counters.logstash'\n" +
-                "* `node_domain_selector={selector} -- find event type graphs under " +
-                "{statsd_base}.per-host.{node_name}.{selector}.events.type. Default '*.*'\n" +
+                "* `node_domain_selector={selector}` -- find event type graphs under " +
+                "`{statsd_base}.per-host.{node_name}.{selector}.events.type`. Default '*.*'\n" +
                 "* `refresh={interval}` override default refresh interval of `1min`\n" +
                 "* `omit_columns={csv_list_of_titles}` omit 'graph title list' from the results (eg CPU,Memory)\n" +
                 ""
