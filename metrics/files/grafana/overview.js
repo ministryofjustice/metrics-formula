@@ -30,8 +30,18 @@ var arg_node_domain_selector = '*.*';
 
 var arg_title = "Overview";
 var arg_refresh = "1m";
+var arg_no_help = false;
+var arg_omit_columns = '';
 
 var arg_statsd_base = "bucky.counters.logstash";
+
+if(!_.isUndefined(ARGS.no_help)) {
+  arg_no_help = ARGS.no_help;
+}
+
+if(!_.isUndefined(ARGS.omit_columns)) {
+  arg_omit_columns = ARGS.omit_columns;
+}
 
 if(!_.isUndefined(ARGS.env)) {
   arg_env = ARGS.env;
@@ -96,6 +106,39 @@ function panel_node_links_markdown(node) {
     style: {}
   }
 };
+
+function panel_help_text() {
+  var help_md = "### How to use this dashboard\n" +
+                "\n" +
+                "This dashboard expects:\n" +
+                "\n" +
+                "* collectd reporting to `{env}.{node}` - defaulting to `metrics.monitoring-01`\n" +
+                "* logstash reporting to statsd (for the events graph)\n" +
+                "\n" +
+                "Arguments:\n" +
+                "\n" +
+                "* `no_help` -- omit this panel\n" +
+                "* `env={metric_path}` set to the metric prefix of the graphite names for " +
+                "collectd graphs, eg 'metrics.pvb.prod'\n" +
+                "* `statsd_base={path}` override default statsd path for logstash events. " +
+                "Default is 'bucky.counters.logstash'\n" +
+                "* `node_domain_selector={selector}` -- find event type graphs under " +
+                "`{statsd_base}.per-host.{node_name}.{selector}.events.type`. Default '*.*'\n" +
+                "* `refresh={interval}` override default refresh interval of `1min`\n" +
+                "* `omit_columns={csv_list_of_titles}` omit 'graph title list' from the results (eg CPU,Memory)\n" +
+                ""
+
+  return {
+    title: 'Help',
+    type: 'text',
+    mode: 'markdown',
+    span: 8,
+    error: false,
+    content: help_md,
+    style: {}
+  }
+};
+
 
 function panel_collectd_delta_cpu(title,prefix,node){
   return {
@@ -170,9 +213,9 @@ function panel_collectd_ntp(title, prefix, node) {
     span: 2,
     'y-axis': true,
     y_formats: ["ms"],
-    grid: {max: 100, min: -100},
+    grid: {max: 200, min: -200},
     lines: true,
-    legend: {show: true},
+    legend: {show: false},
     fill: 0,
     linewidth: 1,
     stack: false,
@@ -245,12 +288,23 @@ function panel_collectd_logstash_event_types(title, node) {
   }
 };
 
-function row_of_node_panels(node,prefix) {
+function row_help_text() {
   return {
-    title: node,
-    height: '150px',
+    title: "Help",
+    height: '250px',
     collapse: false,
     panels: [
+      panel_help_text(),
+    ]
+  }
+};
+
+function row_of_node_panels(node,prefix) {
+
+  var omit_columns = []
+  var valid_panels = []
+  if ( arg_omit_columns == '' ) {
+    valid_panels = [
       panel_node_links_markdown(node),
       panel_collectd_delta_cpu("CPU",prefix,node),
       panel_collectd_loadavg("Load",prefix,node),
@@ -258,6 +312,30 @@ function row_of_node_panels(node,prefix) {
       panel_collectd_ntp("Time",prefix,node),
       panel_collectd_logstash_event_types("Events",node)
     ]
+  } else {
+    omit_columns = arg_omit_columns.split(',')
+    if ( omit_columns.indexOf("CPU") === -1 ) {
+      valid_panels.push( panel_collectd_delta_cpu("CPU",prefix,node) )
+    }
+    if ( omit_columns.indexOf("Load") === -1 ) {
+      valid_panels.push( panel_collectd_loadavg("Load",prefix,node) )
+    }
+    if ( omit_columns.indexOf("Memory") === -1 ) {
+      valid_panels.push( panel_collectd_memory("Memory",prefix,node) )
+    }
+    if ( omit_columns.indexOf("Time") === -1 ) {
+      valid_panels.push( panel_collectd_ntp("Time",prefix,node) )
+    }
+    if ( omit_columns.indexOf("Events") === -1 ) {
+      valid_panels.push( panel_collectd_logstash_event_types("Events",node) )
+    }
+  }
+
+  return {
+    title: node,
+    height: '150px',
+    collapse: false,
+    panels: valid_panels
   }
 }
 
@@ -312,6 +390,10 @@ return function(callback) {
     url: '/'
   })
   .done(function(result) {
+
+    if ( ! arg_no_help ) {
+      dashboard.rows.push(row_help_text())
+    }
 
     if ( arg_nodes == '' ) {
       display_nodes = find_filter_values(prefix + ".*")

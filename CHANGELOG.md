@@ -1,3 +1,9 @@
+# Version CURRENT
+
+* help text on overview.js grafana dashboard
+* omit graphs feature for overview.js grafana dashboard
+* fix NTP display in overview.js grafana dashboard
+
 # Version 1.10.0
 
 * Add 'Segments' and 'Size' graphs to the monitoring_health.js dashboard
