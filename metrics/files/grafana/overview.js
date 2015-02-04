@@ -31,11 +31,16 @@ var arg_node_domain_selector = '*.*';
 var arg_title = "Overview";
 var arg_refresh = "1m";
 var arg_no_help = false;
+var arg_omit_columns = '';
 
 var arg_statsd_base = "bucky.counters.logstash";
 
 if(!_.isUndefined(ARGS.no_help)) {
   arg_no_help = ARGS.no_help;
+}
+
+if(!_.isUndefined(ARGS.omit_columns)) {
+  arg_omit_columns = ARGS.omit_columns;
 }
 
 if(!_.isUndefined(ARGS.env)) {
@@ -118,8 +123,9 @@ function panel_help_text() {
                 "* `statsd_base={path}` override default statsd path for logstash events. " +
                 "Default is 'bucky.counters.logstash'\n" +
                 "* `node_domain_selector={selector} -- find event type graphs under " +
-                "{statsd_base}.per-host.{node_name}.{selector}.events.type. Default '*.*'"
+                "{statsd_base}.per-host.{node_name}.{selector}.events.type. Default '*.*'\n" +
                 "* `refresh={interval}` override default refresh interval of `1min`\n" +
+                "* `omit_columns={csv_list_of_titles}` omit 'graph title list' from the results (eg CPU,Memory)\n" +
                 ""
 
   return {
@@ -294,11 +300,11 @@ function row_help_text() {
 };
 
 function row_of_node_panels(node,prefix) {
-  return {
-    title: node,
-    height: '150px',
-    collapse: false,
-    panels: [
+
+  var omit_columns = []
+  var valid_panels = []
+  if ( arg_omit_columns == '' ) {
+    valid_panels = [
       panel_node_links_markdown(node),
       panel_collectd_delta_cpu("CPU",prefix,node),
       panel_collectd_loadavg("Load",prefix,node),
@@ -306,6 +312,30 @@ function row_of_node_panels(node,prefix) {
       panel_collectd_ntp("Time",prefix,node),
       panel_collectd_logstash_event_types("Events",node)
     ]
+  } else {
+    omit_columns = arg_omit_columns.split(',')
+    if ( omit_columns.indexOf("CPU") === -1 ) {
+      valid_panels.push( panel_collectd_delta_cpu("CPU",prefix,node) )
+    }
+    if ( omit_columns.indexOf("Load") === -1 ) {
+      valid_panels.push( panel_collectd_loadavg("Load",prefix,node) )
+    }
+    if ( omit_columns.indexOf("Memory") === -1 ) {
+      valid_panels.push( panel_collectd_memory("Memory",prefix,node) )
+    }
+    if ( omit_columns.indexOf("Time") === -1 ) {
+      valid_panels.push( panel_collectd_ntp("Time",prefix,node) )
+    }
+    if ( omit_columns.indexOf("Events") === -1 ) {
+      valid_panels.push( panel_collectd_logstash_event_types("Events",node) )
+    }
+  }
+
+  return {
+    title: node,
+    height: '150px',
+    collapse: false,
+    panels: valid_panels
   }
 }
 
