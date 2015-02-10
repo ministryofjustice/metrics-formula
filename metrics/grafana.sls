@@ -34,7 +34,7 @@ grafana.git:
     - source: salt://metrics/templates/grafana/config.js
     - user: root
     - group: root
-    - mode: 644 
+    - mode: 644
     - template: jinja
     - require:
       - file: /srv/grafana/application/current
@@ -44,7 +44,7 @@ grafana.git:
     - source: salt://metrics/files/grafana/instance.js
     - user: root
     - group: root
-    - mode: 644 
+    - mode: 644
     - require:
       - file: /srv/grafana/application/current
 
@@ -53,7 +53,16 @@ grafana.git:
     - source: salt://metrics/files/grafana/overview.js
     - user: root
     - group: root
-    - mode: 644 
+    - mode: 644
+    - require:
+      - file: /srv/grafana/application/current
+
+/srv/grafana/application/current/src/app/dashboards/custom_metrics.js:
+  file.managed:
+    - source: salt://metrics/files/grafana/custom_metrics.js
+    - user: root
+    - group: root
+    - mode: 644
     - require:
       - file: /srv/grafana/application/current
 
@@ -62,7 +71,7 @@ grafana.git:
     - source: salt://metrics/files/grafana/monitoring_health.js
     - user: root
     - group: root
-    - mode: 644 
+    - mode: 644
     - require:
       - file: /srv/grafana/application/current
 

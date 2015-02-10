@@ -1,3 +1,7 @@
+# CURRENT
+
+* custom_metric.js dashboard, for displaying arbitrary graphite targets
+
 # Version 1.10.1
 
 * help text on overview.js grafana dashboard
