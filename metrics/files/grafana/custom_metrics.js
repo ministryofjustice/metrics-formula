@@ -57,7 +57,7 @@ function get_all_metrics() {
 function panel_help_text() {
   var help_md = "### How to use this dashboard\n" +
                 "\n" +
-                "This dashboard expects a comma separated list of graphite target paths.\n" +
+                "This dashboard expects a pipe-separated list of graphite target paths.\n" +
                 "\n" +
                 "These will typically need to be URI encoded.\n" +
                 "\n" +
@@ -66,7 +66,7 @@ function panel_help_text() {
                 "Arguments:\n" +
                 "\n" +
                 "* `no_help` -- omit this panel\n" +
-                "* `targets={target1},{target2},...`\n" +
+                "* `targets={target1}|{target2}|...`\n" +
                 "* `refresh={interval}` override default refresh interval of `1min`\n" +
                 ""
 
@@ -217,7 +217,7 @@ return function(callback) {
     if ( arg_targets == "" ) {
       dashboard.rows.push(row_all_metrics())
     } else {
-      var targets = arg_targets.split(',').map(function(target) { return { "target": target } })
+      var targets = arg_targets.split('|').map(function(target) { return { "target": target } })
       dashboard.rows.push(row_custom_metric("Title", targets))
     }
 
