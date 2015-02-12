@@ -1,3 +1,7 @@
+# Current
+
+* remove supervisor dependency
+
 # Version 1.10.1
 
 * help text on overview.js grafana dashboard

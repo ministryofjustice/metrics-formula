@@ -1,4 +1,3 @@
-{% from 'supervisor/lib.sls' import supervise with context %}
 {% from 'utils/apps/lib.sls' import app_skeleton with context %}
 {% from 'metrics/map.jinja' import bucky with context %}
 
