@@ -1,4 +1,4 @@
-# Version 1.11.0
+# Version 1.11.1
 
 * remove supervisor dependency
 * custom_metric.js dashboard, for displaying arbitrary graphite targets
