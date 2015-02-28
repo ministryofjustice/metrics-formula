@@ -1,4 +1,3 @@
-{% from "logstash/map.jinja" import kibana with context %}
 {% from "metrics/map.jinja" import grafana with context %}
 {% from 'utils/apps/lib.sls' import app_skeleton with context %}
 
@@ -6,29 +5,37 @@ include:
   - nginx
   - logstash.client
 
-{{ app_skeleton('grafana') }}
+# Remove the old git-based version
+/srv/grafana/application:
+  file.absent
+/srv/grafana/.ssh:
+  file.absent
 
+/srv/grafana:
+  file.directory:
+    - recuse: True
 
-grafana.git:
-  git:
-    - latest
-    - name: https://github.com/grafana/grafana.git
-    - rev: {{ grafana.revision }}
-    - target: /srv/grafana/application/{{ grafana.revision }}
+grafana-download:
+  archive.extracted:
+    - name: /srv/grafana
+    - source: http://grafanarel.s3.amazonaws.com/grafana-{{ grafana.version }}.tar.gz
+    - source_hash: {{ grafana.src_checksum }}
+    - archive_format: tar
+    - tar_options: z
+    - if_missing: grafana-{{ grafana.version }}/
+    - require:
+      - file: /srv/grafana
 
-
-/srv/grafana/application/current:
+/srv/grafana/current:
   file:
     - symlink
-    - target: /srv/grafana/application/{{ grafana.revision }}
-    - makedirs: True
-    - watch:
-      - git: grafana.git
-
+    - target: /srv/grafana/grafana-{{ grafana.version }}
+    - require:
+      - archive: grafana-download
 
 # configure it only if hosted on separate host than elastic search
 
-/srv/grafana/application/current/src/config.js:
+/srv/grafana/current/config.js:
   file:
     - managed
     - source: salt://metrics/templates/grafana/config.js
@@ -37,43 +44,43 @@ grafana.git:
     - mode: 644
     - template: jinja
     - require:
-      - file: /srv/grafana/application/current
+      - file: /srv/grafana/current
 
-/srv/grafana/application/current/src/app/dashboards/instance.js:
+/srv/grafana/current/app/dashboards/instance.js:
   file.managed:
     - source: salt://metrics/files/grafana/instance.js
     - user: root
     - group: root
     - mode: 644
     - require:
-      - file: /srv/grafana/application/current
+      - file: /srv/grafana/current
 
-/srv/grafana/application/current/src/app/dashboards/overview.js:
+/srv/grafana/current/app/dashboards/overview.js:
   file.managed:
     - source: salt://metrics/files/grafana/overview.js
     - user: root
     - group: root
     - mode: 644
     - require:
-      - file: /srv/grafana/application/current
+      - file: /srv/grafana/current
 
-/srv/grafana/application/current/src/app/dashboards/custom_metrics.js:
+/srv/grafana/current/app/dashboards/custom_metrics.js:
   file.managed:
     - source: salt://metrics/files/grafana/custom_metrics.js
     - user: root
     - group: root
     - mode: 644
     - require:
-      - file: /srv/grafana/application/current
+      - file: /srv/grafana/current
 
-/srv/grafana/application/current/src/app/dashboards/monitoring_health.js:
+/srv/grafana/current/app/dashboards/monitoring_health.js:
   file.managed:
     - source: salt://metrics/files/grafana/monitoring_health.js
     - user: root
     - group: root
     - mode: 644
     - require:
-      - file: /srv/grafana/application/current
+      - file: /srv/grafana/current
 
 /etc/nginx/conf.d/grafana.conf:
   file:
@@ -89,7 +96,7 @@ grafana.git:
       appslug: grafana
       is_default: False
       server_name: 'grafana.*'
-      root_dir: /srv/grafana/application/current/src
+      root_dir: /srv/grafana/current
       index: False
     - watch_in:
       - service: nginx

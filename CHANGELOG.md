@@ -3,6 +3,9 @@
 * Change quoting requirements on grafana:index pillar value to make it match
   the style of grafana:elasticsearchUrl and grafana:graphiteUrl (**BREAKING
   CHANGE**)
+* Upgrade Grafana to 1.9.1.
+* Change how we install Grafana to use release tarballs, not git checkouts as
+  they are no longer complete
 
 # Version 1.11.1
 
