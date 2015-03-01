@@ -1,3 +1,9 @@
+# Unreleased (Version 2.x.0)
+
+* Change quoting requirements on grafana:index pillar value to make it match
+  the style of grafana:elasticsearchUrl and grafana:graphiteUrl (**BREAKING
+  CHANGE**)
+
 # Version 1.11.1
 
 * remove supervisor dependency

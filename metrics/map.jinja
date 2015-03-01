@@ -4,7 +4,7 @@
         'elasticsearchUrl': '//"+window.location.hostname.replace(/^grafana/,"elasticsearch")+(window.location.port ? ":" + window.location.port : "")+"',
         'graphiteUrl': '//"+window.location.hostname.replace(/^grafana/,"graphite")+(window.location.port ? ":" + window.location.port : "")+"',
         'default_route': '/dashboard/script/overview.js',
-        'index': '"grafana-dash"',
+        'index': 'grafana-dash',
     },
     'default': 'Debian',
 }, merge=salt['pillar.get']('grafana', {})) %}
