@@ -49,7 +49,7 @@ function (Settings) {
 
     timezoneOffset: "0000",
 
-    grafana_index: {{ grafana.index }},
+    grafana_index: "{{ grafana.index }}",
 
     panel_names: [
       'text',
