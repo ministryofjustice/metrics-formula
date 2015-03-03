@@ -94,15 +94,9 @@ var arg_from = '2h';
     };
   };
 
-  // used to calculate aliasByNode index in panel template
-  function len(prefix){
-    return prefix.split('.').length - 2;
-  };
-
 //---------------------------------------------------------------------------------------
 
   function panel_collectd_delta_cpu(title,prefix){
-    var idx = len(prefix);
     return {
       title: title,
       type: 'graphite',
@@ -143,7 +137,6 @@ var arg_from = '2h';
   };
 
   function panel_collectd_memory(title,prefix){
-    var idx = len(prefix);
     return {
       title: title,
       type: 'graphite',
@@ -156,7 +149,7 @@ var arg_from = '2h';
       stack: true,
       nullPointMode: "null",
       targets: [
-        { "target": "aliasByNode(" + prefix + "[[instance]].memory.memory.{used,cached,buffered,free}," +(idx+4)+ ")" },
+        { "target": "aliasByNode(" + prefix + "[[instance]].memory.memory.{used,cached,buffered,free},-1)" },
       ],
       aliasColors: {
         "free": "#629E51",
@@ -168,7 +161,6 @@ var arg_from = '2h';
   };
 
   function panel_collectd_loadavg(title,prefix){
-    var idx = len(prefix);
     return {
       title: title,
       type: 'graphite',
@@ -181,7 +173,7 @@ var arg_from = '2h';
       nullPointMode: "null",
       targets: [
         { "target": "alias(countSeries(" + prefix + "[[instance]].cpu.*.*.idle),'cpuCount')" },
-        { "target": "aliasByNode(movingMedian(" + prefix + "[[instance]].load.load.midterm,'10min')," +(idx+4)+ ")" },
+        { "target": "aliasByNode(movingMedian(" + prefix + "[[instance]].load.load.midterm,'10min'),-1)" },
       ],
       aliasColors: {
         "cpuCount": "green",
@@ -191,7 +183,6 @@ var arg_from = '2h';
   };
 
   function panel_collectd_swap_size(title,prefix){
-    var idx = len(prefix);
     return {
       title: title,
       type: 'graphite',
@@ -204,7 +195,7 @@ var arg_from = '2h';
       stack: true,
       nullPointMode: "null",
       targets: [
-        { "target": "aliasByNode(" + prefix + "[[instance]].swap.swap.{free,used,cached}," +(idx+3)+ ")" },
+        { "target": "aliasByNode(" + prefix + "[[instance]].swap.swap.{free,used,cached},-1)" },
       ],
       aliasColors: {
         "used": "#1F78C1",
@@ -215,7 +206,6 @@ var arg_from = '2h';
   };
 
   function panel_collectd_swap_io(title,prefix){
-    var idx = len(prefix);
     return {
       title: title,
       type: 'graphite',
@@ -227,15 +217,14 @@ var arg_from = '2h';
       linewidth: 2,
       nullPointMode: "null",
       targets: [
-        { "target": "aliasByNode(movingMedian(nonNegativeDerivative(keepLastValue(" + prefix + "[[instance]].swap.swap_io.in,10),0),'5min')," +(idx+3)+ ")" },
-        { "target": "aliasByNode(movingMedian(scale(nonNegativeDerivative(keepLastValue(" + prefix + "[[instance]].swap.swap.io-out,10),0),-1),'5min')," +(idx+3)+ ")" },
+        { "target": "aliasByNode(movingMedian(nonNegativeDerivative(keepLastValue(" + prefix + "[[instance]].swap.swap_io.in,10),0),'5min'),-1)" },
+        { "target": "aliasByNode(movingMedian(scale(nonNegativeDerivative(keepLastValue(" + prefix + "[[instance]].swap.swap_io.out,10),0),-1),'5min'),-1)" },
       ]
     }
   };
 
   function panel_collectd_network_octets(title,prefix,intrf){
     intrf = (typeof intrf === "undefined") ? 'eth0' : intrf;
-    var idx = len(prefix);
     return {
       title: title + ', ' + intrf,
       type: 'graphite',
@@ -247,15 +236,14 @@ var arg_from = '2h';
       linewidth: 2,
       nullPointMode: "null",
       targets: [
-        { "target": "aliasByNode(movingMedian(keepLastValue(" + prefix + "[[instance]].interface." + intrf + ".if_octets.rx,10),'5min')," +(idx+4)+ ")" },
-        { "target": "aliasByNode(movingMedian(scale(keepLastValue(" + prefix + "[[instance]].interface." + intrf + ".if_octets.tx,10),-1),'5min')," +(idx+4)+ ")" }
+        { "target": "aliasByNode(movingMedian(keepLastValue(" + prefix + "[[instance]].interface." + intrf + ".if_octets.rx,10),'5min'),-3,-1)" },
+        { "target": "aliasByNode(movingMedian(scale(keepLastValue(" + prefix + "[[instance]].interface." + intrf + ".if_octets.tx,10),-1),'5min'),-3,-1)" }
       ]
     }
   };
 
   function panel_collectd_network_packets(title,prefix,intrf){
     intrf = (typeof intrf === "undefined") ? 'eth0' : intrf;
-    var idx = len(prefix);
     return {
       title: title + ', ' + intrf,
       type: 'graphite',
@@ -267,15 +255,14 @@ var arg_from = '2h';
       linewidth: 2,
       nullPointMode: "null",
       targets: [
-        { "target": "aliasByNode(movingMedian(keepLastValue(" + prefix + "[[instance]].interface." + intrf + ".if_packets.rx,10),'5min')," +(idx+4)+ ")" },
-        { "target": "aliasByNode(movingMedian(scale(keepLastValue(" + prefix + "[[instance]].interface." + intrf + ".if_packets.tx,10),-1),'5min')," +(idx+4)+ ")" }
+        { "target": "aliasByNode(movingMedian(keepLastValue(" + prefix + "[[instance]].interface." + intrf + ".if_packets.rx,10),'5min'),-3,-1)" },
+        { "target": "aliasByNode(movingMedian(scale(keepLastValue(" + prefix + "[[instance]].interface." + intrf + ".if_packets.tx,10),-1),'5min'),-3,-1)" }
       ]
     }
   };
 
   function panel_collectd_df(title,prefix,vol){
     vol = (typeof vol === "undefined") ? 'root' : vol;
-    var idx = len(prefix);
     return {
       title: title + ', ' + vol,
       type: 'graphite',
@@ -288,7 +275,7 @@ var arg_from = '2h';
       stack: true,
       nullPointMode: "null",
       targets: [
-        { "target": "aliasByNode(" + prefix + "[[instance]].df." + vol + ".df_complex.{free,used,reserved}," +(idx+3)+ ")" },
+        { "target": "aliasByNode(" + prefix + "[[instance]].df." + vol + ".df_complex.{free,used,reserved},-3,-1")" },
       ],
       aliasColors: {
         "used": "#447EBC",
@@ -300,7 +287,6 @@ var arg_from = '2h';
 
   function panel_collectd_disk(title,prefix,vol){
     vol = (typeof vol === "undefined") ? 'sda' : vol;
-    var idx = len(prefix);
     return {
       title: title + ', ' + vol,
       type: 'graphite',
@@ -312,8 +298,8 @@ var arg_from = '2h';
       linewidth: 1,
       nullPointMode: "null",
       targets: [
-        { "target": "aliasByNode(" + prefix + "[[instance]].disk." + vol + ".disk_ops.write," +(idx+3)+ "," +(idx+5)+ ")" },
-        { "target": "aliasByNode(scale(" + prefix + "[[instance]].disk." + vol + ".disk_ops.read,-1)," +(idx+3)+ "," +(idx+5)+ ")" }
+        { "target": "aliasByNode(" + prefix + "[[instance]].disk." + vol + ".disk_ops.write,-3,-1)" },
+        { "target": "aliasByNode(scale(" + prefix + "[[instance]].disk." + vol + ".disk_ops.read,-1),-3,-1)" }
       ],
       aliasColors: {
         "write": "#447EBC",
