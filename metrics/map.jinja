@@ -1,6 +1,8 @@
 {% set grafana = salt['grains.filter_by']({
     'Debian': {
-        'revision': 'v1.5.3',
+        'version': '1.9.1',
+        'src': 'http://grafanarel.s3.amazonaws.com/grafana-1.9.1.tar.gz',
+        'src_checksum': 'sha256=c328c7a002622f672affbcaabd5e64ae279be1051ee27c62ba22bfed63680508',
         'elasticsearchUrl': '//"+window.location.hostname.replace(/^grafana/,"elasticsearch")+(window.location.port ? ":" + window.location.port : "")+"',
         'graphiteUrl': '//"+window.location.hostname.replace(/^grafana/,"graphite")+(window.location.port ? ":" + window.location.port : "")+"',
         'default_route': '/dashboard/script/overview.js',

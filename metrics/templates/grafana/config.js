@@ -1,59 +1,48 @@
 {% from 'metrics/map.jinja' import grafana with context %}
-/** @scratch /configuration/config.js/1
- * == Configuration
- * config.js is where you will find the core Grafana configuration. This file contains parameter that
- * must be set before Grafana is run for the first time.
- */
-define(['settings'],
-function (Settings) {
-  "use strict";
+define(['settings'], function(Settings) {
 
   return new Settings({
 
-    /**
-     * elasticsearch url:
-     * For Basic authentication use: http://username:password@domain.com:9200
-     */
-    elasticsearch: "{{ grafana.elasticsearchUrl }}",
+      /* Data sources */
 
-    /**
-     * graphite-web url:
-     * For Basic authentication use: http://username:password@domain.com
-     * Basic authentication requires special HTTP headers to be configured
-     * in nginx or apache for cross origin domain sharing to work (CORS).
-     * Check install documentation on github
-     */
-    graphiteUrl: "{{ grafana.graphiteUrl }}", 
+      // Graphite & Elasticsearch example setup
+      datasources: {
+        graphite: {
+          type: 'graphite',
+          url: "{{ grafana.graphiteUrl }}",
+        },
+        elasticsearch: {
+          type: 'elasticsearch',
+          url: "{{ grafana.elasticsearchUrl }}",
+          index: "{{ grafana.index }}",
+          grafanaDB: true,
+        }
+      },
 
-    /**
-     * Multiple graphite servers? Comment out graphiteUrl and replace with
-     *
-     *  datasources: {
-     *    data_center_us: { type: 'graphite',  url: 'http://<graphite_url>',  default: true },
-     *    data_center_eu: { type: 'graphite',  url: 'http://<graphite_url>' }
-     *  }
-     */
+      /* Global configuration options
+      * ========================================================
+      */
 
-    default_route: "{{ grafana.default_route }}",
+      // specify the limit for dashboard search results
+      search: {
+        max_results: 100
+      },
 
-    /**
-     * If you experiance problems with zoom, it is probably caused by timezone diff between
-     * your browser and the graphite-web application. timezoneOffset setting can be used to have Grafana
-     * translate absolute time ranges to the graphite-web timezone.
-     * Example:
-     *   If TIME_ZONE in graphite-web config file local_settings.py is set to America/New_York, then set
-     *   timezoneOffset to "-0500" (for UTC - 5 hours)
-     * Example:
-     *   If TIME_ZONE is set to UTC, set this to "0000"
-     */
+      // default home dashboard
+      default_route: "{{ grafana.default_route }}",
 
-    timezoneOffset: "0000",
+      // set to false to disable unsaved changes warning
+      unsaved_changes_warning: true,
 
-    grafana_index: "{{ grafana.index }}",
+      // set the default timespan for the playlist feature
+      // Example: "1m", "1h"
+      playlist_timespan: "1m",
 
-    panel_names: [
-      'text',
-      'graphite'
-    ]
-  });
+      // Change window title prefix from 'Grafana - <dashboard title>'
+      window_title_prefix: 'Grafana - ',
+
+    });
 });
+
+
+

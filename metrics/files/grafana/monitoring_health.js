@@ -161,8 +161,8 @@ function panel_carbon_cache(title){
       { "target": 'alias(sumSeries(group(carbon.agents.*.updateOperations)),"Updates")' },
       { "target": 'alias(sumSeries(group(carbon.agents.*.metricsReceived)), "Metrics Received")' },
       { "target": 'alias(sumSeries(group(carbon.agents.*.committedPoints)),"Committed Points"))' },
-      { "target": 'alias(secondYAxis(sumSeries(group(carbon.agents.*.pointsPerUpdate))),"PPU")' },
-      { "target": 'alias(secondYAxis(sumSeries(group(carbon.agents.*.creates))),"Creates")' },
+      { "target": 'alias(sumSeries(group(carbon.agents.*.pointsPerUpdate)),"PPU")' },
+      { "target": 'alias(sumSeries(group(carbon.agents.*.creates)),"Creates")' },
     ],
     aliasColors: {
       "Updates": "blue",
@@ -171,10 +171,10 @@ function panel_carbon_cache(title){
       "PPU": "yellow",
       "Creates": "purple"
     },
-    aliasYAxis: {
-      "PPU": 2,
-      "Creates": 2,
-    }
+    seriesOverrides: [
+      { alias: "PPU", yaxis: 2 },
+      { alias: "Creates", yaxis: 2 }
+    ]
   }
 };
 
@@ -184,7 +184,7 @@ function panel_elasticsearch_gc(title){
     type: 'graphite',
     span: 4,
     renderer: "flot",
-    y_formats: ["ms", null],
+    y_formats: ["ms", "percent"],
     grid: {max: null, min: 0},
     lines: true,
     fill: 2,
@@ -207,9 +207,9 @@ function panel_elasticsearch_gc(title){
       "Old GC Collect Time": "green",
       "Heap Used %": "yellow",
     },
-    aliasYAxis: {
-      "Heap Used %": 2,
-    }
+    seriesOverrides: [
+      { alias: "Heap Used %", yaxis: 2 },
+    ]
   }
 };
 
@@ -246,9 +246,9 @@ function panel_elasticsearch_memory(title){
       "id_cache": "yellow",
       "filter_cache": "purple",
     },
-    aliasYAxis: {
-      "heap_used": 2,
-    }
+    seriesOverrides: [
+      { alias: "heap_used", yaxis: 2 }
+    ]
   }
 };
 
@@ -258,7 +258,7 @@ function panel_elasticsearch_segments(title){
     type: 'graphite',
     span: 4,
     renderer: "flot",
-    y_formats: ["bytes", null],
+    y_formats: ["bytes", "none"],
     grid: {max: null, min: 0},
     lines: true,
     fill: 1,
@@ -281,9 +281,9 @@ function panel_elasticsearch_segments(title){
       "segments_memory": "green",
       "segments_count": "red",
     },
-    aliasYAxis: {
-      "segments_count": 2,
-    }
+    seriesOverrides: [
+      { "alias": "segments_count", "yaxis": 2 }
+    ]
   }
 };
 
@@ -314,9 +314,9 @@ function panel_elasticsearch_size(title){
       "doc_count": "blue",
       "store_size": "green",
     },
-    aliasYAxis: {
-      "store_size": 2,
-    }
+    seriesOverrides: [
+      { alias: "store_size", yaxis: 2 }
+    ]
   }
 };
 
