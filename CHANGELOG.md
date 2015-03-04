@@ -1,4 +1,4 @@
-# Unreleased (Version 2.x.0)
+# Version 2.0.0
 
 * Change quoting requirements on grafana:index pillar value to make it match
   the style of grafana:elasticsearchUrl and grafana:graphiteUrl (**BREAKING
