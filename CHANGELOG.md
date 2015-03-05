@@ -1,3 +1,7 @@
+# Version 2.0.1
+
+* Fix a syntax error in the instance.js dashboard.
+
 # Version 2.0.0
 
 * Change quoting requirements on grafana:index pillar value to make it match
