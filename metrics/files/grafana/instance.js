@@ -275,7 +275,7 @@ var arg_from = '2h';
       stack: true,
       nullPointMode: "null",
       targets: [
-        { "target": "aliasByNode(" + prefix + "[[instance]].df." + vol + ".df_complex.{free,used,reserved},-3,-1")" },
+        { "target": "aliasByNode(" + prefix + "[[instance]].df." + vol + ".df_complex.{free,used,reserved},-3,-1)" },
       ],
       aliasColors: {
         "used": "#447EBC",
