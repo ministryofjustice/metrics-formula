@@ -181,7 +181,7 @@ carbon:
     - context:
       unix_socket: /var/run/graphite/graphite.sock
       appslug: graphite
-      server_name: graphite.*
+      server_name: {{ graphite.server_name }}
       is_default: False
       root_dir: /srv/graphite/data/webapp
       headers:
