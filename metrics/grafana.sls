@@ -95,7 +95,7 @@ grafana-download:
     - context:
       appslug: grafana
       is_default: False
-      server_name: 'grafana.*'
+      server_name: {{ grafana.server_name }}
       root_dir: /srv/grafana/current
       index: False
     - watch_in:

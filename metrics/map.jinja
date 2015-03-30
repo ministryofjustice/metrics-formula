@@ -7,6 +7,7 @@
         'graphiteUrl': '//"+window.location.hostname.replace(/^grafana/,"graphite")+(window.location.port ? ":" + window.location.port : "")+"',
         'default_route': '/dashboard/script/overview.js',
         'index': 'grafana-dash',
+        'server_name': 'grafana.*'
     },
     'default': 'Debian',
 }, merge=salt['pillar.get']('grafana', {})) %}
@@ -15,6 +16,7 @@
     'Debian': {
         'secret_key': 'updateme',
         'data_dir': '/srv/graphite/storage',
+        'server_name': 'graphite.*'
     },
     'default': 'Debian',
 }, merge=salt['pillar.get']('graphite',{})) %}

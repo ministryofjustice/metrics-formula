@@ -1,3 +1,9 @@
+# Version 2.0.2
+
+* Add an ability to set `server_name` for the nginx virtual host for
+  both the Graphite and Grafana via a pillar. The default value is
+  set via `map.jinja`.
+
 # Version 2.0.1
 
 * Fix a syntax error in the instance.js dashboard.
