@@ -1,3 +1,8 @@
+# Version 2.0.3
+
+* Fix. Add the `x` flag `tar_options` to resolve issue with
+  errors during Grafana archive extraction.
+
 # Version 2.0.2
 
 * Add an ability to set `server_name` for the nginx virtual host for
