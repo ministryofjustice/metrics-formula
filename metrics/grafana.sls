@@ -16,15 +16,25 @@ include:
     - recuse: True
 
 grafana-download:
-  archive.extracted:
-    - name: /srv/grafana
+  file.managed:
+    - name: /tmp/grafana-{{ grafana.version }}.tar.gz
     - source: http://grafanarel.s3.amazonaws.com/grafana-{{ grafana.version }}.tar.gz
     - source_hash: {{ grafana.src_checksum }}
-    - archive_format: tar
-    - tar_options: xz
-    - if_missing: grafana-{{ grafana.version }}/
+    - unless: test -d /srv/grafana/grafana-{{ grafana.version }}
     - require:
       - file: /srv/grafana
+
+grafana-extract:
+  cmd.wait:
+    - name: tar -zxf /tmp/grafana-{{ grafana.version }}.tar.gz -C /srv/grafana
+    - require:
+      - file: /srv/grafana
+    - watch:
+      - file: /tmp/grafana-{{ grafana.version }}.tar.gz
+  file.absent:
+    - name: /tmp/grafana-{{ grafana.version }}.tar.gz
+    - watch:
+      - cmd: grafana-extract
 
 /srv/grafana/current:
   file:

@@ -1,3 +1,9 @@
+# Version 2.0.4
+
+* Fix. Retire `archive.extracted` in favour of a manual
+  extraction of the tar archive. This is due to an error
+  in Salt, see: https://github.com/saltstack/salt/issues/20485
+
 # Version 2.0.3
 
 * Fix. Add the `x` flag `tar_options` to resolve issue with
