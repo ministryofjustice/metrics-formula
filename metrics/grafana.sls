@@ -37,7 +37,8 @@ grafana-extract:
     - symlink
     - target: /srv/grafana/grafana-{{ grafana.version }}
     - require:
-      - archive: grafana-download
+      - file: grafana-download
+      - cmd: grafana-extract
 
 # configure it only if hosted on separate host than elastic search
 
