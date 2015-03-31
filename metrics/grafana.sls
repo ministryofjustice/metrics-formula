@@ -31,10 +31,6 @@ grafana-extract:
       - file: /srv/grafana
     - watch:
       - file: /tmp/grafana-{{ grafana.version }}.tar.gz
-  file.absent:
-    - name: /tmp/grafana-{{ grafana.version }}.tar.gz
-    - watch:
-      - cmd: grafana-extract
 
 /srv/grafana/current:
   file:
