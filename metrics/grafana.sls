@@ -21,7 +21,7 @@ grafana-download:
     - source: http://grafanarel.s3.amazonaws.com/grafana-{{ grafana.version }}.tar.gz
     - source_hash: {{ grafana.src_checksum }}
     - archive_format: tar
-    - tar_options: z
+    - tar_options: xz
     - if_missing: grafana-{{ grafana.version }}/
     - require:
       - file: /srv/grafana
