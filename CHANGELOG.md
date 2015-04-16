@@ -1,3 +1,7 @@
+# Version 2.0.x
+
+* Fix bug in carbon upstart script
+
 # Version 2.0.4
 
 * Fix. Retire `archive.extracted` in favour of a manual
