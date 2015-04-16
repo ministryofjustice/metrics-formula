@@ -113,7 +113,7 @@ graphite_seed:
     - script
     - source: salt://metrics/files/graphite/graphite_seed.sh
     - cwd: /srv/graphite/application/current
-    - unless: 'test -e /srv/graphite/.graphite_seed.done'
+    - unless: 'test -e /srv/graphite/.graphite_seed.done -a -f {{ graphite.data_dir }}/graphite.db'
     - user: graphite
     - require:
       - user: graphite
